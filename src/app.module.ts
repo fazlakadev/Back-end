@@ -89,7 +89,7 @@ import { AppVersionModule } from './app-version/app-version.module';
       resolvers: [
         new QueryResolver(['lang', 'locale']),
         AcceptLanguageResolver,
-        new HeaderResolver(['x-lang', 'x-locale', 'accept-language']),
+        new HeaderResolver(['x-lang', 'x-locale']),
       ],
     }),
     PrismaModule,
@@ -149,6 +149,6 @@ import { AppVersionModule } from './app-version/app-version.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RequestIdMiddleware, RequestAuditMiddleware).forRoutes('*');
+    consumer.apply(RequestIdMiddleware, RequestAuditMiddleware).forRoutes('{*path}');
   }
 }
