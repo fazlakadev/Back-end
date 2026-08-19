@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build && npm run copy:i18n",
-    "copy:i18n": "xcopy /E /I /Y \"src\\i18n\" \"dist\\src\\i18n\" > nul",
+    "build": "prisma generate && nest build && npm run copy:i18n",
+    "copy:i18n": "node -e \"require('fs').cpSync('src/i18n','dist/src/i18n',{recursive:true,force:true})\"",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
