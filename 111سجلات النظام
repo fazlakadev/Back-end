@@ -1,10 +1,10 @@
 
 Build logs
-From this deployment · fb40b43
+From this deployment · d34d97e
 
-INFO faable-builder 1.13.0 · deployment deployment_6a8517848c5cc637b844a48f
-INFO ⤵️ Fetching source tarball for commit fb40b43
-INFO Extracted 234 files (1622216 bytes) into /workspace/context
+INFO faable-builder 1.13.0 · deployment deployment_6a851902dc3a06650d6de511
+INFO ⤵️ Fetching source tarball for commit d34d97e
+INFO Extracted 235 files (1737106 bytes) into /workspace/context
 WARN No plan on the deployment — re-detecting on the context
 INFO 🧩 Build plan {"buildpack":"node","type":"node","runtime":"node-22.23.2","start":"npm run start","build_script":"build"}
 INFO Building with env variables NODE_ENV,PORT,API_PREFIX,CORS_ORIGINS,WEBSITE_URL,NEXTAUTH_URL,NEXT_PUBLIC_BASE_URL,AUTH_TRUST_HOST,JWT_SECRET,JWT_EXPIRES_IN,REFRESH_TOKEN_EXPIRES_IN,AUTH_SECRET,ADMIN_JWT_SECRET,ADMIN_JWT_EXPIRES_IN,ADMIN_REFRESH_TOKEN_EXPIRES_IN,ADMIN_DEFAULT_USERNAME,ADMIN_DEFAULT_PASSWORD,ADMIN_DEFAULT_EMAIL,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_CALLBACK_URL,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,GITHUB_CALLBACK_URL,FACEBOOK_APP_ID,FACEBOOK_APP_SECRET,FACEBOOK_CALLBACK_URL,EMAIL_SERVER_HOST,EMAIL_SERVER_PORT,EMAIL_SERVER_USER,EMAIL_SERVER_PASSWORD,EMAIL_FROM,EMAIL_SENDER_NAME,EMAIL_LOGO_URL,RECEIVER_EMAIL,EMAIL_USER,EMAIL_PASS,DATABASE_URL,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,CLOUDINARY_CLOUD_NAME,CLOUDINARY_API_KEY,CLOUDINARY_API_SECRET,IMGBB_API_KEY,YOUTUBE_API_KEY,YOUTUBE_CHANNEL_ID,NEXT_PUBLIC_PUSHER_APP_KEY,NEXT_PUBLIC_PUSHER_APP_CLUSTER,PUSHER_APP_ID,PUSHER_APP_SECRET,PUSHER_USE_TLS,NEXT_PUBLIC_VAPID_KEY,VAPID_PRIVATE_KEY,TELEGRAM_BOT_TOKEN,TELEGRAM_BOT_USERNAME,PAYMOB_API_KEY,PAYMOB_INTEGRATION_ID,PAYMOB_HMAC_SECRET,PAYMOB_IFRAME_ID,FIREBASE_PROJECT_ID,FIREBASE_CLIENT_EMAIL,FIREBASE_PRIVATE_KEY,CALLS_ENABLED,CALLS_SIGNALING_PATH,CALLS_WS_URL,CALLS_TURN_URL,CALLS_TURN_USERNAME,CALLS_TURN_CREDENTIAL,CALLS_ICE_SERVERS,MEDIASOUP_WORKERS,MEDIASOUP_LOG_LEVEL,MEDIASOUP_LOG_TAGS,MEDIASOUP_LISTEN_IP,MEDIASOUP_ANNOUNCED_IP,MEDIASOUP_OUTGOING_BITRATE,MEDIASOUP_MAX_INCOMING_BITRATE,MEDIASOUP_RTC_MIN_PORT,MEDIASOUP_RTC_MAX_PORT,MEMORY_HEAP_LIMIT_MB,MEMORY_RSS_LIMIT_MB,SLOW_QUERY_MS,LOG_DIR,FAABLE_APP_ID,FAABLE_DEPLOY_ID,FAABLE_GIT_COMMIT,FAABLE_GIT_REF
@@ -19,7 +19,7 @@ npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and con
 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
-added 1071 packages, and audited 1072 packages in 18s
+added 1071 packages, and audited 1072 packages in 17s
 
 181 packages are looking for funding
   run `npm fund` for details

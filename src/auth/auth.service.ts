@@ -574,6 +574,10 @@ export class AuthService {
       });
     }
 
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
     try {
       this.assertAllowed(user);
     } catch (e) {
@@ -656,6 +660,10 @@ export class AuthService {
         where: { id: user.id },
         data,
       });
+    }
+
+    if (!user) {
+      throw new BadRequestException('User not found');
     }
 
     try {
@@ -748,6 +756,10 @@ export class AuthService {
         where: { id: user.id },
         data,
       });
+    }
+
+    if (!user) {
+      throw new BadRequestException('User not found');
     }
 
     try {
