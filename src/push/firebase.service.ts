@@ -24,18 +24,24 @@ export class FirebaseService implements OnModuleInit {
     const privateKey = this.config.get<string>('FIREBASE_PRIVATE_KEY');
 
     if (projectId && clientEmail && privateKey) {
-      if (getApps().length === 0) {
-        this.app = initializeApp({
-          credential: cert({
-            projectId,
-            clientEmail,
-            privateKey: privateKey.replace(/\\n/g, '\n'),
-          }),
-        });
-      } else {
-        this.app = getApps()[0];
+      try {
+        if (getApps().length === 0) {
+          this.app = initializeApp({
+            credential: cert({
+              projectId,
+              clientEmail,
+              privateKey: privateKey.replace(/\\n/g, '\n'),
+            }),
+          });
+        } else {
+          this.app = getApps()[0];
+        }
+        this.logger.log('Firebase Admin initialized successfully');
+      } catch (error) {
+        this.logger.warn(
+          `Firebase initialization failed: ${(error as Error).message} — FCM push notifications disabled`,
+        );
       }
-      this.logger.log('Firebase Admin initialized successfully');
     } else {
       this.logger.warn(
         'Firebase credentials missing — FCM push notifications disabled',
