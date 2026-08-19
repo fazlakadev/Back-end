@@ -609,18 +609,27 @@ export class AuthController {
         }
       }
     }
-    const result = await this.auth.googleLogin(
-      req.user as Parameters<AuthService['googleLogin']>[0],
-      ctx,
-    );
-    const redirectBase =
-      this.config.get<string>('google.redirectUrl') ||
-      this.config.get<string>('websiteUrl') ||
-      'http://localhost:3000';
-    const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
-      result.accessToken,
-    )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
-    return res.redirect(url);
+    try {
+      const result = await this.auth.googleLogin(
+        req.user as Parameters<AuthService['googleLogin']>[0],
+        ctx,
+      );
+      const redirectBase =
+        this.config.get<string>('google.redirectUrl') ||
+        this.config.get<string>('websiteUrl') ||
+        'http://localhost:3000';
+      const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
+        result.accessToken,
+      )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
+      return res.redirect(url);
+    } catch (err: any) {
+      const redirectBase =
+        this.config.get<string>('websiteUrl') || 'http://localhost:3000';
+      const message = err?.message || 'oauth_failed';
+      return res.redirect(
+        `${redirectBase}/login?error=${encodeURIComponent(message)}`,
+      );
+    }
   }
 
   @Public()
@@ -671,19 +680,28 @@ export class AuthController {
         }
       }
     }
-    const result = await this.auth.githubLogin(
-      req.user as Parameters<AuthService['githubLogin']>[0],
-      ctx,
-    );
-    const redirectBase =
-      this.config.get<string>('github.redirectUrl') ||
-      this.config.get<string>('google.redirectUrl') ||
-      this.config.get<string>('websiteUrl') ||
-      'http://localhost:3000';
-    const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
-      result.accessToken,
-    )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
-    return res.redirect(url);
+    try {
+      const result = await this.auth.githubLogin(
+        req.user as Parameters<AuthService['githubLogin']>[0],
+        ctx,
+      );
+      const redirectBase =
+        this.config.get<string>('github.redirectUrl') ||
+        this.config.get<string>('google.redirectUrl') ||
+        this.config.get<string>('websiteUrl') ||
+        'http://localhost:3000';
+      const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
+        result.accessToken,
+      )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
+      return res.redirect(url);
+    } catch (err: any) {
+      const redirectBase =
+        this.config.get<string>('websiteUrl') || 'http://localhost:3000';
+      const message = err?.message || 'oauth_failed';
+      return res.redirect(
+        `${redirectBase}/login?error=${encodeURIComponent(message)}`,
+      );
+    }
   }
 
   @Public()
@@ -718,19 +736,28 @@ export class AuthController {
         }
       }
     }
-    const result = await this.auth.githubLogin(
-      req.user as Parameters<AuthService['githubLogin']>[0],
-      ctx,
-    );
-    const redirectBase =
-      this.config.get<string>('github.redirectUrl') ||
-      this.config.get<string>('google.redirectUrl') ||
-      this.config.get<string>('websiteUrl') ||
-      'http://localhost:3000';
-    const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
-      result.accessToken,
-    )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
-    return res.redirect(url);
+    try {
+      const result = await this.auth.githubLogin(
+        req.user as Parameters<AuthService['githubLogin']>[0],
+        ctx,
+      );
+      const redirectBase =
+        this.config.get<string>('github.redirectUrl') ||
+        this.config.get<string>('google.redirectUrl') ||
+        this.config.get<string>('websiteUrl') ||
+        'http://localhost:3000';
+      const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
+        result.accessToken,
+      )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
+      return res.redirect(url);
+    } catch (err: any) {
+      const redirectBase =
+        this.config.get<string>('websiteUrl') || 'http://localhost:3000';
+      const message = err?.message || 'oauth_failed';
+      return res.redirect(
+        `${redirectBase}/login?error=${encodeURIComponent(message)}`,
+      );
+    }
   }
 
   @Public()
@@ -781,19 +808,28 @@ export class AuthController {
         }
       }
     }
-    const result = await this.auth.facebookLogin(
-      req.user as Parameters<AuthService['facebookLogin']>[0],
-      ctx,
-    );
-    const redirectBase =
-      this.config.get<string>('facebook.redirectUrl') ||
-      this.config.get<string>('google.redirectUrl') ||
-      this.config.get<string>('websiteUrl') ||
-      'http://localhost:3000';
-    const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
-      result.accessToken,
-    )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
-    return res.redirect(url);
+    try {
+      const result = await this.auth.facebookLogin(
+        req.user as Parameters<AuthService['facebookLogin']>[0],
+        ctx,
+      );
+      const redirectBase =
+        this.config.get<string>('facebook.redirectUrl') ||
+        this.config.get<string>('google.redirectUrl') ||
+        this.config.get<string>('websiteUrl') ||
+        'http://localhost:3000';
+      const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
+        result.accessToken,
+      )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
+      return res.redirect(url);
+    } catch (err: any) {
+      const redirectBase =
+        this.config.get<string>('websiteUrl') || 'http://localhost:3000';
+      const message = err?.message || 'oauth_failed';
+      return res.redirect(
+        `${redirectBase}/login?error=${encodeURIComponent(message)}`,
+      );
+    }
   }
 
   @Public()
@@ -828,19 +864,28 @@ export class AuthController {
         }
       }
     }
-    const result = await this.auth.facebookLogin(
-      req.user as Parameters<AuthService['facebookLogin']>[0],
-      ctx,
-    );
-    const redirectBase =
-      this.config.get<string>('facebook.redirectUrl') ||
-      this.config.get<string>('google.redirectUrl') ||
-      this.config.get<string>('websiteUrl') ||
-      'http://localhost:3000';
-    const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
-      result.accessToken,
-    )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
-    return res.redirect(url);
+    try {
+      const result = await this.auth.facebookLogin(
+        req.user as Parameters<AuthService['facebookLogin']>[0],
+        ctx,
+      );
+      const redirectBase =
+        this.config.get<string>('facebook.redirectUrl') ||
+        this.config.get<string>('google.redirectUrl') ||
+        this.config.get<string>('websiteUrl') ||
+        'http://localhost:3000';
+      const url = `${redirectBase}/auth/callback?accessToken=${encodeURIComponent(
+        result.accessToken,
+      )}&refreshToken=${encodeURIComponent(result.refreshToken)}`;
+      return res.redirect(url);
+    } catch (err: any) {
+      const redirectBase =
+        this.config.get<string>('websiteUrl') || 'http://localhost:3000';
+      const message = err?.message || 'oauth_failed';
+      return res.redirect(
+        `${redirectBase}/login?error=${encodeURIComponent(message)}`,
+      );
+    }
   }
 
   @Public()
