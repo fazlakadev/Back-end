@@ -1,0 +1,54 @@
+services:
+  api-staging:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fazlaka-api-staging
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env.staging
+    environment:
+      - NODE_ENV=staging
+      - PORT=3002
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      - api-staging-logs:/app/logs
+    depends_on:
+      db-staging:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3002/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  db-staging:
+    image: postgres:16-alpine
+    container_name: fazlaka-db-staging
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: fazlaka_staging
+      POSTGRES_PASSWORD: staging_password
+      POSTGRES_DB: fazlaka_staging
+    volumes:
+      - api-staging-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fazlaka_staging"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  api-staging-logs:
+  api-staging-db:

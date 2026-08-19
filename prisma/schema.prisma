@@ -1,0 +1,1286 @@
+// ============================================================
+// Fazlaka Platform — Prisma Schema (Neon / PostgreSQL)
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------------
+// Enums
+// ------------------------------------------------------------
+enum Locale {
+  ar
+  en
+  fr
+}
+
+enum Platform {
+  WEB      // Next.js website
+  MOBILE   // Flutter mobile
+  DESKTOP  // Flutter desktop
+}
+
+enum TwoFactorMethod {
+  EMAIL
+  APP
+}
+
+enum DeviceType {
+  mobile
+  tablet
+  desktop
+  tv
+  unknown
+}
+
+enum ContentType {
+  article
+  episode
+  season
+  playlist
+  comment
+  user
+}
+
+enum LikeType {
+  like
+  love
+  haha
+  wow
+  sad
+  angry
+}
+
+enum FriendStatus {
+  pending
+  accepted
+  rejected
+  blocked
+}
+
+enum ConversationKind {
+  direct
+  group
+}
+
+enum MessageType {
+  text
+  image
+  video
+  audio
+}
+
+enum GroupMemberRole {
+  member
+  admin
+}
+
+enum TicketStatus {
+  open
+  pending
+  resolved
+  closed
+}
+
+enum TicketPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+enum CallStatus {
+  active
+  ended
+}
+
+enum NotificationType {
+  comment
+  like
+  friend_request
+  friend_accepted
+  system
+  support
+  announcement
+}
+
+enum UserStatus {
+  active
+  suspended
+  banned
+  deleted
+}
+
+enum BannerPosition {
+  hero
+  sidebar
+  feed
+  app_banner
+}
+
+enum AdminRank {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+}
+
+enum PlaylistKind {
+  user
+  platform
+}
+
+enum CommentStatus {
+  active
+  hidden
+  removed
+}
+
+enum ReportReason {
+  spam
+  harassment
+  inappropriate
+  copyright
+  impersonation
+  other
+}
+
+enum ReportStatus {
+  pending
+  reviewing
+  resolved
+  dismissed
+}
+
+// ------------------------------------------------------------
+// Users & Auth
+// ------------------------------------------------------------
+model User {
+  id            String       @id @default(cuid())
+  email         String       @unique
+  emailVerified DateTime?
+  passwordHash  String?
+  googleId      String?      @unique
+  githubId      String?      @unique
+  facebookId    String?      @unique
+  name          String
+  username      String       @unique
+  publicId      String?      @unique
+  avatarUrl     String?
+  bannerUrl     String?
+
+  // Terms & Privacy consent
+  termsAcceptedAt DateTime?
+  termsVersion    String?
+  bio           String?
+  status        UserStatus   @default(active)
+  lastActiveAt  DateTime?
+  lastLoginIp   String?
+  lastLoginNotifiedIp String?
+  lastPlatform  Platform?
+  locale        Locale       @default(ar)
+  referralCode  String?      @unique
+  referredById  String?
+  referredBy    User?        @relation("Referrals", fields: [referredById], references: [id])
+  referrals     User[]       @relation("Referrals")
+  failedLoginAt DateTime?
+
+  // First-login onboarding (edit profile + friend suggestions)
+  onboardedAt DateTime?
+
+  // Phone + Telegram (verified via the Fazlaka Telegram bot)
+  phone            String?
+  phoneVerifiedAt  DateTime?
+  telegramChatId   String?
+  telegramUsername String?
+
+  // Security
+  twoFactorEnabled Boolean @default(false)
+  twoFactorMethod  TwoFactorMethod @default(EMAIL)
+  twoFactorSecret  String?
+  failedLoginCount Int      @default(0)
+  lockedUntil      DateTime?
+
+  // Ban / suspension (managed by admins)
+  banReason        String?
+  banExpiresAt     DateTime?
+  bannedAt         DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  preference      UserPreference?
+  refreshTokens   RefreshToken[]
+  authEvents      AuthEvent[]
+  verificationTokens VerificationToken[]
+  secondaryEmails UserEmail[]
+  articles        Article[]
+  seasons         Season[]
+  episodes        Episode[]
+  playlists       Playlist[]
+  comments        Comment[]
+  likes           Like[]
+  views           View[]
+  sentFriendRequests Friend[] @relation("FriendSender")
+  receivedFriendRequests Friend[] @relation("FriendReceiver")
+  conversationsA    Conversation[] @relation("ConversationA")
+  conversationsB    Conversation[] @relation("ConversationB")
+  conversationsCreated Conversation[] @relation("ConversationCreatedBy")
+  groupMemberships  GroupMember[]
+  sentMessages      Message[] @relation("MessageSender")
+  tickets         SupportTicket[]
+  messages        SupportMessage[]
+  notifications   Notification[]
+  geolocations    Geolocation[]
+  uploads         MediaAsset[]
+  reportsMade     Report[]     @relation("Reporter")
+  reportMessages  ReportMessage[] @relation("ReportMessageUser")
+  ratings         Rating[]
+  progress        PlaybackProgress[]
+  pushSubscriptions PushSubscription[]
+  deviceTokens    DeviceToken[]
+  phoneVerifications PhoneVerification[]
+
+  @@index([referredById])
+}
+
+model UserPreference {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  locale            Locale   @default(ar)
+  primaryLocale     Locale   @default(ar)
+  secondaryLocale   Locale?  @default(en)
+  notificationsEnabled Boolean @default(true)
+  emailNotifications  Boolean @default(true)
+  loginAlerts         Boolean @default(true)
+  pushNotifications   Boolean @default(true)
+  newsletter         Boolean @default(false)
+  darkMode          Boolean  @default(true)
+  showOnline        Boolean  @default(true)
+  timezone          String?  @default("Africa/Cairo")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  ip        String?
+  platform  Platform?
+  deviceType String?
+  deviceName String?
+  os        String?
+  browser   String?
+  country   String?
+  countryCode String?
+  city      String?
+  lastUsedAt DateTime?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// ------------------------------------------------------------
+// User auth events (login history / activity for monitoring)
+// ------------------------------------------------------------
+model AuthEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventType String // login | register | logout | refresh | google | two_factor | failed_login | password_reset_request | password_reset | password_changed | email_verified | email_changed | verify_email_resend
+  method    String? // password | google | otp | refresh_token | token
+  platform  String? // WEB | MOBILE | DESKTOP
+  status    String   @default("success") // success | failed
+  ip        String?
+  ipHash    String?
+  userAgent String?
+  device    String? // desktop | tablet | mobile (parsed)
+  browser   String?
+  os        String?
+  country   String?
+  countryCode String?
+  city      String?
+  lat       Decimal? @db.Decimal(10, 7)
+  lng       Decimal? @db.Decimal(10, 7)
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([eventType, createdAt])
+  @@index([platform, createdAt])
+  @@index([createdAt])
+}
+
+model VerificationToken {
+  id            String   @id @default(cuid())
+  token         String   @unique
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          String // EMAIL_VERIFY | PASSWORD_RESET | EMAIL_CHANGE | TWO_FACTOR | SECONDARY_VERIFY
+  expiresAt     DateTime
+  usedAt        DateTime?
+  otpHash       String?  // sha256(otp)
+  otpExpiresAt  DateTime?
+  attempts      Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+// ------------------------------------------------------------
+// Phone verification via the Fazlaka Telegram bot
+// ------------------------------------------------------------
+model PhoneVerification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone     String
+  codeHash    String   // sha256(otp)
+  expiresAt   DateTime
+  usedAt      DateTime?
+  consumedAt  DateTime? // set when the app issues tokens after verification
+  attempts    Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([phone])
+}
+
+model TelegramLink {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  chatId    String
+  username  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([chatId])
+}
+
+// ------------------------------------------------------------
+// Admins (fully separated from regular users)
+// ------------------------------------------------------------
+model Admin {
+  id            String   @id @default(cuid())
+  username      String   @unique
+  passwordHash  String
+  email         String?  @unique
+  emailVerified Boolean  @default(false)
+  avatarUrl     String?
+  displayName   String?
+  rank          AdminRank @default(MODERATOR)
+  permissions   String[] @default([])
+  platforms     String[] @default([]) // WEB | MOBILE | DESKTOP scoping
+  isActive      Boolean  @default(true)
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
+  failedLoginCount Int      @default(0)
+  lockedUntil   DateTime?
+  lastLoginAt   DateTime?
+  lastLoginIp   String?
+  lastLoginCountry  String?
+  lastLoginCity     String?
+  lastLoginLat      Decimal? @db.Decimal(10, 7)
+  lastLoginLng      Decimal? @db.Decimal(10, 7)
+  lastLoginDevice   String?
+  lastLoginBrowser  String?
+  lastLoginOs       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  refreshTokens AdminRefreshToken[]
+  authEvents    AdminAuthEvent[]
+  otps          AdminOtp[]
+  createdPlaylists Playlist[]
+  handledReports   Report[]
+  moderatedRatings Rating[]
+  auditLogs        AuditLog[]
+  backups          Backup[]
+  supportReplies   SupportMessage[]
+  reportMessages   ReportMessage[] @relation("ReportMessageAdmin")
+  webhooks         WebhookEndpoint[]
+
+  @@index([username])
+}
+
+model AdminRefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  userAgent String?
+  ip        String?
+  platform  String?
+  deviceType String?
+  deviceName String?
+  os        String?
+  browser   String?
+  country   String?
+  countryCode String?
+  city      String?
+  lat       Decimal? @db.Decimal(10, 7)
+  lng       Decimal? @db.Decimal(10, 7)
+  expiresAt DateTime
+  revokedAt DateTime?
+  lastUsedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([adminId])
+  @@index([expiresAt])
+}
+
+// ------------------------------------------------------------
+// Admin auth security events (login / 2fa / lockout / logout)
+// ------------------------------------------------------------
+model AdminAuthEvent {
+  id        String   @id @default(cuid())
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  eventType String // login | failed_login | two_factor | lockout | logout | geo_mismatch | refresh
+  method    String?  // password | otp | refresh_token
+  status    String   @default("success") // success | failed
+  ip        String?
+  ipHash    String?
+  userAgent String?
+  device    String?
+  browser   String?
+  os        String?
+  country   String?
+  countryCode String?
+  city      String?
+  lat       Decimal? @db.Decimal(10, 7)
+  lng       Decimal? @db.Decimal(10, 7)
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([adminId, createdAt])
+  @@index([eventType, createdAt])
+  @@index([createdAt])
+}
+
+// ------------------------------------------------------------
+// Admin OTP verification (2FA via email)
+// ------------------------------------------------------------
+model AdminOtp {
+  id           String   @id @default(cuid())
+  adminId      String
+  admin        Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  otpHash      String
+  otpExpiresAt DateTime
+  attempts     Int      @default(0)
+  usedAt       DateTime?
+  purpose      String   @default("2fa")
+  createdAt    DateTime @default(now())
+
+  @@index([adminId])
+  @@index([createdAt])
+}
+
+// ------------------------------------------------------------
+// Platform management (per-platform config, maintenance, versions)
+// ------------------------------------------------------------
+model PlatformConfig {
+  id                 String   @id @default(cuid())
+  platform           Platform @unique
+  displayName        String?
+  enabled            Boolean  @default(true)
+  maintenanceMode    Boolean  @default(false)
+  maintenanceMessage String?
+  minVersion         String?
+  latestVersion      String?
+  downloadUrl        String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+// ------------------------------------------------------------
+// Site-wide settings (key/value, public subset exposed via API)
+// ------------------------------------------------------------
+model SiteSetting {
+  key         String   @id
+  value       String?
+  valueJson   Json?
+  description String?
+  isPublic    Boolean  @default(false)
+  updatedBy   String?
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublic])
+}
+
+// ------------------------------------------------------------
+// Backup records (created via the admin backup flow)
+// ------------------------------------------------------------
+model Backup {
+  id          String   @id @default(cuid())
+  fileName    String
+  fileUrl     String?
+  sizeBytes   Int      @default(0)
+  status      String   @default("completed") // pending | completed | failed
+  type        String   @default("manual") // manual | scheduled
+  data        Json?
+  error       String?
+  createdById String?
+  createdBy   Admin?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ------------------------------------------------------------
+// Secondary emails (verified via OTP, switchable with primary)
+// ------------------------------------------------------------
+model UserEmail {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email      String    @unique
+  isVerified Boolean   @default(false)
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@index([email])
+}
+
+// ------------------------------------------------------------
+// Moderation reports (comments, articles, episodes, users, ...)
+// ------------------------------------------------------------
+model Report {
+  id                String        @id @default(cuid())
+  reporterId        String
+  reporter          User          @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  contentType       ContentType
+  contentId         String
+  reason            ReportReason
+  note              String?
+  status            ReportStatus  @default(pending)
+  handledByAdminId  String?
+  handledBy         Admin?        @relation(fields: [handledByAdminId], references: [id], onDelete: SetNull)
+  platform          Platform?
+  createdAt         DateTime      @default(now())
+  resolvedAt        DateTime?
+
+  messages ReportMessage[]
+
+  @@index([status])
+  @@index([contentType, contentId])
+  @@index([reporterId])
+  @@index([handledByAdminId])
+  @@index([status, createdAt])
+}
+
+model ReportMessage {
+  id            String   @id @default(cuid())
+  reportId      String
+  report        Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  senderType    String   @default("admin") // "admin" | "user"
+  senderAdminId String?
+  senderAdmin   Admin?   @relation("ReportMessageAdmin", fields: [senderAdminId], references: [id], onDelete: SetNull)
+  senderUserId  String?
+  senderUser    User?    @relation("ReportMessageUser", fields: [senderUserId], references: [id], onDelete: SetNull)
+  body          String
+  createdAt     DateTime @default(now())
+
+  @@index([reportId])
+  @@index([senderType])
+  @@index([senderUserId])
+  @@index([reportId, createdAt])
+}
+
+// ------------------------------------------------------------
+// Geolocation
+// ------------------------------------------------------------
+model Geolocation {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lat         Decimal  @db.Decimal(10, 7)
+  lng         Decimal  @db.Decimal(10, 7)
+  country     String?
+  countryCode String?
+  region      String?
+  city        String?
+  zip         String?
+  platform    Platform?
+  capturedAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([countryCode])
+}
+
+// ------------------------------------------------------------
+// Media
+// ------------------------------------------------------------
+model MediaAsset {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url       String
+  provider  String   @default("imgbb")
+  deleteUrl String?
+  kind      String? // image | video | audio
+  width     Int?
+  height    Int?
+  size      Int?
+  mimeType  String?
+  purpose   String? // avatar | banner | article | episode | generic
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ------------------------------------------------------------
+// Banners
+// ------------------------------------------------------------
+model Banner {
+  id          String   @id @default(cuid())
+  imageUrl    String
+  linkUrl     String?
+  position    BannerPosition @default(hero)
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  clicks      Int      @default(0)
+  impressions Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  translations BannerTranslation[]
+}
+
+model BannerTranslation {
+  id        String @id @default(cuid())
+  bannerId  String
+  banner    Banner @relation(fields: [bannerId], references: [id], onDelete: Cascade)
+  locale    Locale
+  title     String
+  subtitle  String?
+
+  @@unique([bannerId, locale])
+}
+
+// ------------------------------------------------------------
+// Content: Articles, Seasons, Episodes, Playlists
+// ------------------------------------------------------------
+model Article {
+    id          String      @id @default(cuid())
+    slug        String      @unique
+    authorId    String?
+    author      User?       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  seasonId    String?
+  season      Season?     @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+  platform    Platform    @default(WEB)
+  coverImage  String?
+  category    String?
+  tags        String[]    @default([])
+  bodyFormat  BodyFormat  @default(text)
+  published   Boolean     @default(false)
+  publishedAt DateTime?
+  viewsCount  Int         @default(0)
+  likesCount  Int         @default(0)
+  commentsCount Int       @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  translations ArticleTranslation[]
+
+  @@index([authorId])
+  @@index([seasonId])
+  @@index([platform])
+  @@index([published])
+  @@index([publishedAt])
+}
+
+model ArticleTranslation {
+  id        String  @id @default(cuid())
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  locale    Locale
+  title     String
+  excerpt   String?
+  body      String
+  seoTitle  String?
+  seoDescription String?
+
+  @@unique([articleId, locale])
+}
+
+model Season {
+    id          String   @id @default(cuid())
+    slug        String   @unique
+    createdById String?
+    createdBy   User?    @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  platform    Platform @default(WEB)
+  coverImage  String?
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  translations SeasonTranslation[]
+  episodes    Episode[]
+  articles    Article[]
+
+  @@index([platform])
+  @@index([published])
+  @@index([createdById])
+}
+
+model SeasonTranslation {
+  id        String @id @default(cuid())
+  seasonId  String
+  season    Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  locale    Locale
+  title     String
+  description String?
+
+  @@unique([seasonId, locale])
+}
+
+model Episode {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+    seasonId    String?
+    season      Season?  @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+    authorId    String?
+    author      User?    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  platform    Platform @default(WEB)
+  coverImage  String?
+  videoUrl    String?
+  audioUrl    String?
+  duration    Int? // seconds
+  episodeNumber Int?
+  category    String?
+  releaseYear Int?
+  tags        String[]
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  viewsCount  Int      @default(0)
+  likesCount  Int      @default(0)
+  commentsCount Int    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  translations EpisodeTranslation[]
+  playlistItems PlaylistItem[]
+  progress      PlaybackProgress[]
+
+  @@index([seasonId])
+  @@index([platform])
+  @@index([published])
+  @@index([category])
+  @@index([releaseYear])
+  @@index([authorId])
+  @@index([seasonId, episodeNumber])
+  @@index([published, createdAt])
+}
+
+model EpisodeTranslation {
+  id        String  @id @default(cuid())
+  episodeId String
+  episode   Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  locale    Locale
+  title     String
+  description String?
+  content   String? // transcript / notes
+
+  @@unique([episodeId, locale])
+}
+
+model Playlist {
+  id          String       @id @default(cuid())
+  slug        String       @unique
+  kind        PlaylistKind @default(user)
+  platform    Platform     @default(WEB)
+  ownerId     String?
+  owner       User?        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdByAdminId String?
+  createdByAdmin Admin?    @relation(fields: [createdByAdminId], references: [id], onDelete: SetNull)
+  coverImage  String?
+  isPublic    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  translations PlaylistTranslation[]
+  items       PlaylistItem[]
+
+  @@index([kind])
+  @@index([platform])
+  @@index([ownerId, isPublic])
+}
+
+model PlaylistTranslation {
+  id          String @id @default(cuid())
+  playlistId  String
+  playlist    Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  locale      Locale
+  title       String
+  description String?
+
+  @@unique([playlistId, locale])
+}
+
+model PlaylistItem {
+  id          String   @id @default(cuid())
+  playlistId  String
+  playlist    Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  episodeId   String?
+  episode     Episode? @relation(fields: [episodeId], references: [id], onDelete: SetNull)
+  sortOrder   Int      @default(0)
+  addedAt     DateTime @default(now())
+
+  @@unique([playlistId, episodeId])
+  @@index([episodeId])
+}
+
+// ------------------------------------------------------------
+// Social: Likes, Comments, Friends
+// ------------------------------------------------------------
+model Like {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentType ContentType
+  contentId   String // polymorphic FK (article/episode/playlist/comment id)
+  type        LikeType    @default(like)
+  createdAt   DateTime    @default(now())
+
+  @@unique([userId, contentType, contentId])
+  @@index([contentType, contentId])
+  @@index([userId, createdAt])
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentType ContentType
+  contentId   String
+  parentId    String?
+  parent      Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("CommentReplies")
+  body        String
+  likesCount  Int      @default(0)
+  edited      Boolean  @default(false)
+  status      CommentStatus @default(active)
+  platform    Platform?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([contentType, contentId])
+  @@index([parentId])
+  @@index([userId])
+  @@index([contentType, contentId, createdAt])
+}
+
+model Friend {
+  id         String       @id @default(cuid())
+  senderId   String
+  sender     User         @relation("FriendSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User         @relation("FriendReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  status     FriendStatus @default(pending)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@unique([senderId, receiverId])
+  @@index([receiverId, status])
+  @@index([senderId, status])
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  kind      ConversationKind @default(direct)
+  userAId   String
+  userA     User      @relation("ConversationA", fields: [userAId], references: [id], onDelete: Cascade)
+  userBId   String
+  userB     User      @relation("ConversationB", fields: [userBId], references: [id], onDelete: Cascade)
+  name      String?
+  avatarUrl String?
+  bannerUrl String?
+  createdById String?
+  createdBy User?      @relation("ConversationCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+  members   GroupMember[]
+
+  @@index([userAId, userBId])
+  @@index([userAId])
+  @@index([userBId])
+  @@index([kind])
+  @@index([createdById])
+}
+
+model GroupMember {
+  id             String          @id @default(cuid())
+  conversationId String
+  conversation   Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           GroupMemberRole @default(member)
+  joinedAt       DateTime        @default(now())
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  type           MessageType  @default(text)
+  body           String
+  attachmentUrl  String?
+  attachmentMime String?
+  attachmentName String?
+  attachmentSize Int?
+  durationSec    Int?
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+  @@index([senderId, createdAt])
+}
+
+// ------------------------------------------------------------
+// Views & Analytics (platform-aware)
+// ------------------------------------------------------------
+model View {
+  id          String      @id @default(cuid())
+  userId      String?
+  user        User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contentType ContentType
+  contentId   String
+  platform    Platform
+  deviceType  DeviceType  @default(unknown)
+  deviceName  String?
+  os          String?
+  browser     String?
+  appVersion  String?
+  userAgent   String?
+  ipHash      String?
+  country     String?
+  countryCode String?
+  city        String?
+  referrer    String?
+  locale      Locale?
+  durationSec Int?
+  completed   Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+
+  @@index([contentType, contentId])
+  @@index([userId])
+  @@index([platform])
+  @@index([createdAt])
+  @@index([countryCode])
+}
+
+// ------------------------------------------------------------
+// Support
+// ------------------------------------------------------------
+model SupportTicket {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     String
+  status      TicketStatus   @default(open)
+  priority    TicketPriority @default(medium)
+  platform    Platform?
+  deviceInfo  String?
+  resolvedAt  DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  messages    SupportMessage[]
+  calls       CallSession[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model CallSession {
+  id          String      @id @default(cuid())
+  ticketId    String
+  ticket      SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  status      CallStatus  @default(active)
+  startedBy   String?
+  startedByAdminId String?
+  startedAt   DateTime    @default(now())
+  endedAt     DateTime?
+  endedBy     String?
+  durationSec Int?
+
+  @@index([ticketId])
+  @@index([status])
+}
+
+model SupportMessage {
+  id            String        @id @default(cuid())
+  ticketId      String
+  ticket        SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  senderId      String?
+  sender        User?         @relation(fields: [senderId], references: [id], onDelete: SetNull)
+  senderAdminId String?
+  senderAdmin   Admin?        @relation(fields: [senderAdminId], references: [id], onDelete: SetNull)
+  isAdminReply  Boolean       @default(false)
+  body          String
+  isSystem      Boolean       @default(false)
+  attachments   String[]
+  createdAt     DateTime      @default(now())
+
+  @@index([ticketId])
+}
+
+// ------------------------------------------------------------
+// Notifications
+// ------------------------------------------------------------
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String
+  data      Json?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  @@index([userId, readAt])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+}
+
+// ------------------------------------------------------------
+// Broadcast log (admin broadcast history)
+// ------------------------------------------------------------
+model BroadcastLog {
+  id          String   @id @default(cuid())
+  adminId     String
+  title       String
+  body        String
+  imageUrl    String?
+  deepLink    String?
+  locale      String?
+  platform    String?  // "android", "ios", "web", null = all
+  sendPush    Boolean  @default(false)
+  sentCount   Int      @default(0)
+  pushSent    Int      @default(0)
+  pushFailed  Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([adminId])
+  @@index([createdAt])
+}
+
+// ------------------------------------------------------------
+// Playback progress (resume watching, per episode)
+// ------------------------------------------------------------
+model PlaybackProgress {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  episodeId       String
+  episode         Episode  @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  positionSeconds Int      @default(0)
+  durationSeconds Int?
+  percent         Int      @default(0)
+  updatedAt       DateTime @updatedAt
+
+  @@unique([userId, episodeId])
+  @@index([userId, updatedAt])
+  @@index([episodeId])
+}
+
+// ------------------------------------------------------------
+// Ratings & reviews (polymorphic, moderated)
+// ------------------------------------------------------------
+enum RatingStatus {
+  pending
+  approved
+  rejected
+}
+
+enum BodyFormat {
+  text
+  html
+}
+
+model Rating {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentType    ContentType
+  contentId      String
+  value          Int          // 1..5
+  comment        String?
+  status         RatingStatus @default(approved)
+  moderationNote String?
+  moderatedById  String?
+  moderatedBy    Admin?       @relation(fields: [moderatedById], references: [id], onDelete: SetNull)
+  platform       Platform?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([userId, contentType, contentId])
+  @@index([contentType, contentId, status])
+  @@index([status])
+}
+
+// ------------------------------------------------------------
+// Admin audit log
+// ------------------------------------------------------------
+model AuditLog {
+  id        String   @id @default(cuid())
+  adminId   String?
+  admin     Admin?   @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  action    String
+  entityType String
+  entityId  String?
+  entityLabel String?
+  details   Json?
+  ip        String?
+  ipHash    String?
+  userAgent String?
+  platform  String?
+  device    String?
+  browser   String?
+  os        String?
+  country   String?
+  countryCode String?
+  city      String?
+  lat       Decimal? @db.Decimal(10, 7)
+  lng       Decimal? @db.Decimal(10, 7)
+  createdAt DateTime @default(now())
+
+  @@index([adminId])
+  @@index([action])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+// ------------------------------------------------------------
+// Newsletter subscribers
+// ------------------------------------------------------------
+enum NewsletterStatus {
+  pending
+  active
+  unsubscribed
+  bounced
+}
+
+model NewsletterSubscriber {
+  id             String           @id @default(cuid())
+  email          String           @unique
+  name           String?
+  locale         String           @default("ar")
+  status         NewsletterStatus @default(pending)
+  token          String? // confirmation / unsubscribe token
+  subscribedAt   DateTime?
+  unsubscribedAt DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@index([status])
+  @@index([locale])
+}
+
+// ------------------------------------------------------------
+// Webhooks (outbound, signed with HMAC)
+// ------------------------------------------------------------
+enum WebhookDeliveryStatus {
+  pending
+  success
+  failed
+}
+
+model WebhookEndpoint {
+  id             String             @id @default(cuid())
+  name           String
+  url            String
+  secret         String
+  events         String[]
+  enabled        Boolean            @default(true)
+  createdById    String?
+  createdBy      Admin?             @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  lastStatus     WebhookDeliveryStatus?
+  lastTriggeredAt DateTime?
+  deliveries     WebhookDelivery[]
+
+  @@index([enabled])
+}
+
+model WebhookDelivery {
+  id             String               @id @default(cuid())
+  webhookId      String
+  webhook        WebhookEndpoint      @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  event          String
+  payload        Json
+  status         WebhookDeliveryStatus @default(pending)
+  statusCode     Int?
+  responseBody   String?
+  attempts       Int                  @default(0)
+  nextAttemptAt  DateTime?
+  createdAt      DateTime             @default(now())
+  completedAt    DateTime?
+
+  @@index([webhookId, createdAt])
+  @@index([status, nextAttemptAt])
+}
+
+// ------------------------------------------------------------
+// Web push subscriptions
+// ------------------------------------------------------------
+model PushSubscription {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint   String   @unique
+  p256dh     String
+  auth       String
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  lastUsedAt DateTime?
+
+  @@index([userId])
+}
+
+// ------------------------------------------------------------
+// Device tokens for FCM push notifications
+// ------------------------------------------------------------
+model DeviceToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  platform  String   // "android", "ios", "web"
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  deviceName String?
+  os        String?
+  appVersion String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([token, userId])
+  @@index([userId])
+  @@index([platform])
+}
