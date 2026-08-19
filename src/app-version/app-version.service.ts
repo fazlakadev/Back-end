@@ -157,12 +157,15 @@ export class AppVersionService {
   }
 
   private async fetchFromGitHub(): Promise<AppVersionResponse> {
-    const response = await fetch(this.GITHUB_API_URL, {
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-        'User-Agent': 'fazlaka-api',
-      },
-    });
+    const githubToken = this.config.get<string>('GITHUB_TOKEN');
+    const headers: Record<string, string> = {
+      Accept: 'application/vnd.github.v3+json',
+      'User-Agent': 'fazlaka-api',
+    };
+    if (githubToken) {
+      headers.Authorization = `Bearer ${githubToken}`;
+    }
+    const response = await fetch(this.GITHUB_API_URL, { headers });
 
     if (!response.ok) {
       this.logger.error(`GitHub API error: ${response.status} ${response.statusText}`);
