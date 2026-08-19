@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AppVersionService } from './app-version.service';
 import { RedisCacheService } from '../common/cache/redis-cache.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { WebhooksService } from '../webhooks/webhooks.service';
 
 describe('AppVersionService', () => {
   let service: AppVersionService;
@@ -10,6 +13,15 @@ describe('AppVersionService', () => {
     set: jest.Mock;
     del: jest.Mock;
     getOrSet: jest.Mock;
+  };
+  let prisma: {
+    platformConfig: {
+      findUnique: jest.Mock;
+      upsert: jest.Mock;
+    };
+  };
+  let webhooks: {
+    send: jest.Mock;
   };
 
   const mockVersionResponse = {
@@ -40,13 +52,25 @@ describe('AppVersionService', () => {
       get: jest.fn().mockResolvedValue(null),
       set: jest.fn().mockResolvedValue(undefined),
       del: jest.fn().mockResolvedValue(undefined),
-      getOrSet: jest.fn().mockImplementation((_key, factory, _ttl) => factory()),
+      getOrSet: jest.fn().mockImplementation((_key: string, factory: Function) => factory()),
+    };
+    prisma = {
+      platformConfig: {
+        findUnique: jest.fn().mockResolvedValue(null),
+        upsert: jest.fn().mockResolvedValue(undefined),
+      },
+    };
+    webhooks = {
+      send: jest.fn().mockResolvedValue(undefined),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AppVersionService,
         { provide: RedisCacheService, useValue: cache },
+        { provide: PrismaService, useValue: prisma },
+        { provide: WebhooksService, useValue: webhooks },
+        { provide: ConfigService, useValue: { get: jest.fn() } },
       ],
     }).compile();
 
@@ -71,7 +95,7 @@ describe('AppVersionService', () => {
       expect(cache.getOrSet).toHaveBeenCalledWith(
         'app:version:latest',
         expect.any(Function),
-        7200,
+        300,
       );
     });
 
@@ -81,7 +105,7 @@ describe('AppVersionService', () => {
         json: async () => mockGitHubRelease,
       });
 
-      cache.getOrSet.mockImplementation(async (_key, factory) => factory());
+      cache.getOrSet.mockImplementation(async (_key: string, factory: Function) => factory());
 
       const result = await service.getLatestVersion();
 
@@ -95,7 +119,7 @@ describe('AppVersionService', () => {
         json: async () => mockGitHubRelease,
       });
 
-      cache.getOrSet.mockImplementation(async (_key, factory) => factory());
+      cache.getOrSet.mockImplementation(async (_key: string, factory: Function) => factory());
 
       const result = await service.getLatestVersion();
 
@@ -121,7 +145,7 @@ describe('AppVersionService', () => {
         json: async () => releaseWithoutApk,
       });
 
-      cache.getOrSet.mockImplementation(async (_key, factory) => factory());
+      cache.getOrSet.mockImplementation(async (_key: string, factory: Function) => factory());
 
       const result = await service.getLatestVersion();
 
@@ -135,7 +159,7 @@ describe('AppVersionService', () => {
         statusText: 'rate limit exceeded',
       });
 
-      cache.getOrSet.mockImplementation(async (_key, factory) => factory());
+      cache.getOrSet.mockImplementation(async (_key: string, factory: Function) => factory());
 
       await expect(service.getLatestVersion()).rejects.toThrow(NotFoundException);
     });
@@ -148,11 +172,49 @@ describe('AppVersionService', () => {
         json: async () => releaseWithEmptyBody,
       });
 
-      cache.getOrSet.mockImplementation(async (_key, factory) => factory());
+      cache.getOrSet.mockImplementation(async (_key: string, factory: Function) => factory());
 
       const result = await service.getLatestVersion();
 
       expect(result.releaseNotes).toBe('');
+    });
+  });
+
+  describe('handleGitHubWebhook', () => {
+    it('should process published release and fire webhook', async () => {
+      const payload = {
+        action: 'published',
+        release: mockGitHubRelease,
+      };
+
+      const result = await service.handleGitHubWebhook(payload as never);
+
+      expect(result.received).toBe(true);
+      expect(result.version).toBe('1.2.0');
+      expect(cache.del).toHaveBeenCalledWith('app:version:latest');
+      expect(prisma.platformConfig.upsert).toHaveBeenCalled();
+      expect(webhooks.send).toHaveBeenCalledWith('app.version.updated', expect.objectContaining({
+        version: '1.2.0',
+      }));
+    });
+
+    it('should handle ping events', async () => {
+      const payload = { zen: 'test' };
+
+      const result = await service.handleGitHubWebhook(payload as never);
+
+      expect(result.received).toBe(true);
+    });
+
+    it('should ignore non-published events', async () => {
+      const payload = {
+        action: 'created',
+        release: mockGitHubRelease,
+      };
+
+      const result = await service.handleGitHubWebhook(payload as never);
+
+      expect(result.received).toBe(false);
     });
   });
 
@@ -163,11 +225,10 @@ describe('AppVersionService', () => {
         json: async () => mockGitHubRelease,
       });
 
-      cache.getOrSet.mockImplementation(async (_key, factory) => factory());
-
       await service.forceRefresh();
 
       expect(cache.del).toHaveBeenCalledWith('app:version:latest');
+      expect(cache.set).toHaveBeenCalled();
     });
   });
 });

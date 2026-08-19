@@ -501,6 +501,8 @@ model PlatformConfig {
   minVersion         String?
   latestVersion      String?
   downloadUrl        String?
+  forceUpdate        Boolean  @default(false)
+  forceUpdateMessage String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }
