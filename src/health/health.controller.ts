@@ -39,7 +39,7 @@ export class HealthController {
     return this.health.check([
       () =>
         this.prismaHealth.pingCheck('database', this.prisma, {
-          timeout: 5000,
+          timeout: 10000,
         }),
       () =>
         this.memoryHealth.checkRSS('memory_rss', MEMORY_RSS_LIMIT_MB * 1024 * 1024),

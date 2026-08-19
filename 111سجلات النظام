@@ -1,0 +1,2110 @@
+
+Build logs
+From this deployment · fb40b43
+
+INFO faable-builder 1.13.0 · deployment deployment_6a8517848c5cc637b844a48f
+INFO ⤵️ Fetching source tarball for commit fb40b43
+INFO Extracted 234 files (1622216 bytes) into /workspace/context
+WARN No plan on the deployment — re-detecting on the context
+INFO 🧩 Build plan {"buildpack":"node","type":"node","runtime":"node-22.23.2","start":"npm run start","build_script":"build"}
+INFO Building with env variables NODE_ENV,PORT,API_PREFIX,CORS_ORIGINS,WEBSITE_URL,NEXTAUTH_URL,NEXT_PUBLIC_BASE_URL,AUTH_TRUST_HOST,JWT_SECRET,JWT_EXPIRES_IN,REFRESH_TOKEN_EXPIRES_IN,AUTH_SECRET,ADMIN_JWT_SECRET,ADMIN_JWT_EXPIRES_IN,ADMIN_REFRESH_TOKEN_EXPIRES_IN,ADMIN_DEFAULT_USERNAME,ADMIN_DEFAULT_PASSWORD,ADMIN_DEFAULT_EMAIL,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_CALLBACK_URL,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,GITHUB_CALLBACK_URL,FACEBOOK_APP_ID,FACEBOOK_APP_SECRET,FACEBOOK_CALLBACK_URL,EMAIL_SERVER_HOST,EMAIL_SERVER_PORT,EMAIL_SERVER_USER,EMAIL_SERVER_PASSWORD,EMAIL_FROM,EMAIL_SENDER_NAME,EMAIL_LOGO_URL,RECEIVER_EMAIL,EMAIL_USER,EMAIL_PASS,DATABASE_URL,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,CLOUDINARY_CLOUD_NAME,CLOUDINARY_API_KEY,CLOUDINARY_API_SECRET,IMGBB_API_KEY,YOUTUBE_API_KEY,YOUTUBE_CHANNEL_ID,NEXT_PUBLIC_PUSHER_APP_KEY,NEXT_PUBLIC_PUSHER_APP_CLUSTER,PUSHER_APP_ID,PUSHER_APP_SECRET,PUSHER_USE_TLS,NEXT_PUBLIC_VAPID_KEY,VAPID_PRIVATE_KEY,TELEGRAM_BOT_TOKEN,TELEGRAM_BOT_USERNAME,PAYMOB_API_KEY,PAYMOB_INTEGRATION_ID,PAYMOB_HMAC_SECRET,PAYMOB_IFRAME_ID,FIREBASE_PROJECT_ID,FIREBASE_CLIENT_EMAIL,FIREBASE_PRIVATE_KEY,CALLS_ENABLED,CALLS_SIGNALING_PATH,CALLS_WS_URL,CALLS_TURN_URL,CALLS_TURN_USERNAME,CALLS_TURN_CREDENTIAL,CALLS_ICE_SERVERS,MEDIASOUP_WORKERS,MEDIASOUP_LOG_LEVEL,MEDIASOUP_LOG_TAGS,MEDIASOUP_LISTEN_IP,MEDIASOUP_ANNOUNCED_IP,MEDIASOUP_OUTGOING_BITRATE,MEDIASOUP_MAX_INCOMING_BITRATE,MEDIASOUP_RTC_MIN_PORT,MEDIASOUP_RTC_MAX_PORT,MEMORY_HEAP_LIMIT_MB,MEMORY_RSS_LIMIT_MB,SLOW_QUERY_MS,LOG_DIR,FAABLE_APP_ID,FAABLE_DEPLOY_ID,FAABLE_GIT_COMMIT,FAABLE_GIT_REF
+INFO 📦 node_modules missing — installing dependencies [npm ci --include=dev]
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated google-p12-pem@3.1.4: Package is no longer maintained
+npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated uuid@8.3.2: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+npm warn deprecated uuid@8.3.2: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+
+added 1071 packages, and audited 1072 packages in 18s
+
+181 packages are looking for funding
+  run `npm fund` for details
+
+12 vulnerabilities (5 moderate, 6 high, 1 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice
+INFO ⚙️ Building project [npm run build]...
+
+> fazlaka-api@0.0.1 build
+> nest build && npm run copy:i18n
+
+prisma/seed.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+
+1 import { PrismaClient } from '@prisma/client';
+           ~~~~~~~~~~~~
+src/admin/admin-events.service.ts:2:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+2 import type { Prisma } from '@prisma/client';
+                ~~~~~~
+src/admin/admin-events.service.ts:72:25 - error TS2339: Property 'adminAuthEvent' does not exist on type 'PrismaService'.
+
+72       await this.prisma.adminAuthEvent.create({
+                           ~~~~~~~~~~~~~~
+src/admin/admin-events.service.ts:127:19 - error TS2339: Property 'adminAuthEvent' does not exist on type 'PrismaService'.
+
+127       this.prisma.adminAuthEvent.findMany({
+                      ~~~~~~~~~~~~~~
+src/admin/admin-events.service.ts:143:19 - error TS2339: Property 'adminAuthEvent' does not exist on type 'PrismaService'.
+
+143       this.prisma.adminAuthEvent.count({ where }),
+                      ~~~~~~~~~~~~~~
+src/admin/admin.controller.ts:29:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+29 import type { Admin } from '@prisma/client';
+                 ~~~~~
+src/admin/admin.service.ts:14:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+14 import { Admin, AdminRank } from '@prisma/client';
+            ~~~~~
+src/admin/admin.service.ts:14:17 - error TS2305: Module '"@prisma/client"' has no exported member 'AdminRank'.
+
+14 import { Admin, AdminRank } from '@prisma/client';
+                   ~~~~~~~~~
+src/admin/admin.service.ts:113:23 - error TS2339: Property 'adminRefreshToken' does not exist on type 'PrismaService'.
+
+113     await this.prisma.adminRefreshToken.create({
+                          ~~~~~~~~~~~~~~~~~
+src/admin/admin.service.ts:169:37 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+169     const admin = await this.prisma.admin.findUnique({
+                                        ~~~~~
+src/admin/admin.service.ts:181:38 - error TS2339: Property 'adminOtp' does not exist on type 'PrismaService'.
+
+181     const recent = await this.prisma.adminOtp.findFirst({
+                                         ~~~~~~~~
+src/admin/admin.service.ts:199:23 - error TS2339: Property 'adminOtp' does not exist on type 'PrismaService'.
+
+199     await this.prisma.adminOtp.create({
+                          ~~~~~~~~
+src/admin/admin.service.ts:258:37 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+258     const admin = await this.prisma.admin.findUnique({
+                                        ~~~~~
+src/admin/admin.service.ts:287:25 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+287       await this.prisma.admin.update({
+                            ~~~~~
+src/admin/admin.service.ts:318:23 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+318     await this.prisma.admin.update({
+                          ~~~~~
+src/admin/admin.service.ts:382:38 - error TS2339: Property 'adminOtp' does not exist on type 'PrismaService'.
+
+382     const record = await this.prisma.adminOtp.findFirst({
+                                         ~~~~~~~~
+src/admin/admin.service.ts:400:25 - error TS2339: Property 'adminOtp' does not exist on type 'PrismaService'.
+
+400       await this.prisma.adminOtp.update({
+                            ~~~~~~~~
+src/admin/admin.service.ts:413:27 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+413         await this.prisma.admin.update({
+                              ~~~~~
+src/admin/admin.service.ts:431:23 - error TS2339: Property 'adminOtp' does not exist on type 'PrismaService'.
+
+431     await this.prisma.adminOtp.update({
+                          ~~~~~~~~
+src/admin/admin.service.ts:468:23 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+468     await this.prisma.admin.update({
+                          ~~~~~
+src/admin/admin.service.ts:490:38 - error TS2339: Property 'adminRefreshToken' does not exist on type 'PrismaService'.
+
+490     const stored = await this.prisma.adminRefreshToken.findUnique({
+                                         ~~~~~~~~~~~~~~~~~
+src/admin/admin.service.ts:497:27 - error TS2339: Property 'adminRefreshToken' does not exist on type 'PrismaService'.
+
+497         await this.prisma.adminRefreshToken.update({
+                              ~~~~~~~~~~~~~~~~~
+src/admin/admin.service.ts:512:23 - error TS2339: Property 'adminRefreshToken' does not exist on type 'PrismaService'.
+
+512     await this.prisma.adminRefreshToken.update({
+                          ~~~~~~~~~~~~~~~~~
+src/admin/admin.service.ts:532:38 - error TS2339: Property 'adminRefreshToken' does not exist on type 'PrismaService'.
+
+532     const stored = await this.prisma.adminRefreshToken.findUnique({
+                                         ~~~~~~~~~~~~~~~~~
+src/admin/admin.service.ts:536:25 - error TS2339: Property 'adminRefreshToken' does not exist on type 'PrismaService'.
+
+536       await this.prisma.adminRefreshToken.update({
+                            ~~~~~~~~~~~~~~~~~
+src/admin/admin.service.ts:551:37 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+551     const admin = await this.prisma.admin.findUnique({
+                                        ~~~~~
+src/admin/admin.service.ts:563:37 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+563     const admin = await this.prisma.admin.findUnique({
+                                        ~~~~~
+src/admin/admin.service.ts:576:23 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+576     await this.prisma.admin.update({
+                          ~~~~~
+src/admin/admin.service.ts:580:23 - error TS2339: Property 'adminRefreshToken' does not exist on type 'PrismaService'.
+
+580     await this.prisma.adminRefreshToken.updateMany({
+                          ~~~~~~~~~~~~~~~~~
+src/admin/admin.service.ts:601:38 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+601     const exists = await this.prisma.admin.findUnique({ where: { username } });
+                                         ~~~~~
+src/admin/admin.service.ts:611:45 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+611       const emailExists = await this.prisma.admin.findUnique({
+                                                ~~~~~
+src/admin/admin.service.ts:623:37 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+623     const admin = await this.prisma.admin.create({
+                                        ~~~~~
+src/admin/admin.service.ts:650:19 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+650       this.prisma.admin.findMany({
+                      ~~~~~
+src/admin/admin.service.ts:675:19 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+675       this.prisma.admin.count(),
+                      ~~~~~
+src/admin/admin.service.ts:682:37 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+682     const admin = await this.prisma.admin.findUnique({ where: { id } });
+                                        ~~~~~
+src/admin/admin.service.ts:691:38 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+691     const target = await this.prisma.admin.findUnique({ where: { id } });
+                                         ~~~~~
+src/admin/admin.service.ts:716:45 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+716       const emailExists = await this.prisma.admin.findFirst({
+                                                ~~~~~
+src/admin/admin.service.ts:728:37 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+728     const admin = await this.prisma.admin.update({
+                                        ~~~~~
+src/admin/admin.service.ts:754:25 - error TS2339: Property 'adminRefreshToken' does not exist on type 'PrismaService'.
+
+754       await this.prisma.adminRefreshToken.updateMany({
+                            ~~~~~~~~~~~~~~~~~
+src/admin/admin.service.ts:781:38 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+781     const target = await this.prisma.admin.findUnique({ where: { id } });
+                                         ~~~~~
+src/admin/admin.service.ts:785:23 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+785     await this.prisma.admin.delete({ where: { id } });
+                          ~~~~~
+src/admin/dto/admin.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'AdminRank'.
+
+1 import { AdminRank } from '@prisma/client';
+           ~~~~~~~~~
+src/analytics/analytics.controller.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'ContentType'.
+
+2 import { ContentType } from '@prisma/client';
+           ~~~~~~~~~~~
+src/analytics/analytics.service.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'ContentType'.
+
+2 import { ContentType, Prisma } from '@prisma/client';
+           ~~~~~~~~~~~
+src/analytics/analytics.service.ts:2:23 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+2 import { ContentType, Prisma } from '@prisma/client';
+                        ~~~~~~
+src/analytics/analytics.service.ts:51:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+51       this.prisma.user.count(),
+                     ~~~~
+src/analytics/analytics.service.ts:52:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+52       this.prisma.user.count({
+                     ~~~~
+src/analytics/analytics.service.ts:55:19 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+55       this.prisma.article.count({ where: contentWhere }),
+                     ~~~~~~~
+src/analytics/analytics.service.ts:56:19 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+56       this.prisma.episode.count({ where: contentWhere }),
+                     ~~~~~~~
+src/analytics/analytics.service.ts:57:19 - error TS2339: Property 'season' does not exist on type 'PrismaService'.
+
+57       this.prisma.season.count({ where: contentWhere }),
+                     ~~~~~~
+src/analytics/analytics.service.ts:58:19 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+58       this.prisma.playlist.count({ where: contentWhere }),
+                     ~~~~~~~~
+src/analytics/analytics.service.ts:59:19 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+59       this.prisma.view.count({ where: platformWhere }),
+                     ~~~~
+src/analytics/analytics.service.ts:60:19 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+60       this.prisma.like.count(),
+                     ~~~~
+src/analytics/analytics.service.ts:61:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+61       this.prisma.comment.count(),
+                     ~~~~~~~
+src/analytics/analytics.service.ts:65:19 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+65       this.prisma.view.count({
+                     ~~~~
+src/analytics/analytics.service.ts:71:19 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+71       this.prisma.view.count({
+                     ~~~~
+src/analytics/analytics.service.ts:77:19 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+77       this.prisma.view.count({
+                     ~~~~
+src/analytics/analytics.service.ts:93:19 - error TS2339: Property 'rating' does not exist on type 'PrismaService'.
+
+93       this.prisma.rating.count({ where: { status: 'pending' } }),
+                     ~~~~~~
+src/analytics/analytics.service.ts:94:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+94       this.prisma.comment.count({ where: { status: 'hidden' } }),
+                     ~~~~~~~
+src/analytics/analytics.service.ts:95:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+95       this.prisma.user.groupBy({
+                     ~~~~
+src/analytics/analytics.service.ts:99:19 - error TS2339: Property 'report' does not exist on type 'PrismaService'.
+
+99       this.prisma.report.groupBy({
+                     ~~~~~~
+src/analytics/analytics.service.ts:103:19 - error TS2339: Property 'report' does not exist on type 'PrismaService'.
+
+103       this.prisma.report.count({
+                      ~~~~~~
+src/analytics/analytics.service.ts:115:21 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+115         this.prisma.playlist.count({
+                        ~~~~~~~~
+src/analytics/analytics.service.ts:118:21 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+118         this.prisma.playlist.count({
+                        ~~~~~~~~
+src/analytics/analytics.service.ts:161:8 - error TS7053: Element implicitly has an 'any' type because expression of type '"article" | "episode" | "season"' can't be used to index type 'PrismaService'.
+  Property 'article' does not exist on type 'PrismaService'.
+
+161       (this.prisma[model] as any).count({
+           ~~~~~~~~~~~~~~~~~~
+src/analytics/analytics.service.ts:164:8 - error TS7053: Element implicitly has an 'any' type because expression of type '"article" | "episode" | "season"' can't be used to index type 'PrismaService'.
+  Property 'article' does not exist on type 'PrismaService'.
+
+164       (this.prisma[model] as any).count({
+           ~~~~~~~~~~~~~~~~~~
+src/analytics/analytics.service.ts:177:36 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+177     const rows = await this.prisma.view.findMany({
+                                       ~~~~
+src/analytics/analytics.service.ts:202:38 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+202     const groups = await this.prisma.view.groupBy({
+                                         ~~~~
+src/analytics/analytics.service.ts:237:38 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+237     const groups = await this.prisma.view.groupBy({
+                                         ~~~~
+src/analytics/analytics.service.ts:249:24 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+249     return this.prisma.view.groupBy({
+                           ~~~~
+src/analytics/analytics.service.ts:273:24 - error TS2339: Property 'view' does not exist on type 'PrismaService'.
+
+273     return this.prisma.view.groupBy({
+                           ~~~~
+src/analytics/analytics.service.ts:290:37 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+290     const users = await this.prisma.user.findMany({
+                                        ~~~~
+src/analytics/analytics.service.ts:305:19 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+305       this.prisma.like.count({ where: { createdAt: { gte: from, lte: to } } }),
+                      ~~~~
+src/analytics/analytics.service.ts:306:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+306       this.prisma.comment.count({
+                      ~~~~~~~
+src/analytics/analytics.service.ts:309:19 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+309       this.prisma.friend.count({
+                      ~~~~~~
+src/analytics/analytics.service.ts:380:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+380       this.prisma.authEvent.count({
+                      ~~~~~~~~~
+src/analytics/analytics.service.ts:383:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+383       this.prisma.authEvent.count({
+                      ~~~~~~~~~
+src/analytics/analytics.service.ts:386:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+386       this.prisma.authEvent.count({
+                      ~~~~~~~~~
+src/analytics/analytics.service.ts:392:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+392       this.prisma.authEvent.count({
+                      ~~~~~~~~~
+src/analytics/analytics.service.ts:395:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+395       this.prisma.authEvent.groupBy({
+                      ~~~~~~~~~
+src/analytics/analytics.service.ts:400:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+400       this.prisma.authEvent.groupBy({
+                      ~~~~~~~~~
+src/analytics/analytics.service.ts:405:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+405       this.prisma.authEvent.groupBy({
+                      ~~~~~~~~~
+src/analytics/analytics.service.ts:410:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+410       this.prisma.authEvent.findMany({
+                      ~~~~~~~~~
+src/analytics/analytics.service.ts:426:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+426       this.prisma.user.count(),
+                      ~~~~
+src/analytics/analytics.service.ts:427:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+427       this.prisma.user.count({ where: { lastActiveAt: { gte: from } } }),
+                      ~~~~
+src/analytics/analytics.service.ts:428:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+428       this.prisma.user.count({ where: { lockedUntil: { gt: new Date() } } }),
+                      ~~~~
+src/articles/articles.controller.ts:28:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+28 import type { Locale, Admin, Platform } from '@prisma/client';
+                 ~~~~~~
+src/articles/articles.controller.ts:28:23 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+28 import type { Locale, Admin, Platform } from '@prisma/client';
+                         ~~~~~
+src/articles/articles.controller.ts:28:30 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+28 import type { Locale, Admin, Platform } from '@prisma/client';
+                                ~~~~~~~~
+src/articles/articles.service.ts:6:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+           ~~~~~~
+src/articles/articles.service.ts:6:18 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+                   ~~~~~~~~
+src/articles/articles.service.ts:6:28 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+                             ~~~~~~
+src/articles/articles.service.ts:32:39 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+32     const article = await this.prisma.article.create({
+                                         ~~~~~~~
+src/articles/articles.service.ts:98:19 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+98       this.prisma.article.findMany({
+                     ~~~~~~~
+src/articles/articles.service.ts:109:19 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+109       this.prisma.article.count({ where }),
+                      ~~~~~~~
+src/articles/articles.service.ts:115:39 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+115     const article = await this.prisma.article.findFirst({
+                                          ~~~~~~~
+src/articles/articles.service.ts:147:40 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+147     const existing = await this.prisma.article.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/articles/articles.service.ts:204:39 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+204     const article = await this.prisma.article.update({
+                                          ~~~~~~~
+src/articles/articles.service.ts:217:40 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+217     const existing = await this.prisma.article.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/articles/articles.service.ts:228:23 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+228     await this.prisma.article.delete({ where: { id } });
+                          ~~~~~~~
+src/articles/articles.service.ts:242:39 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+242     const article = await this.prisma.article.findFirst({
+                                          ~~~~~~~
+src/articles/articles.service.ts:259:40 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+259     const existing = await this.prisma.article.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/articles/articles.service.ts:310:39 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+310     const article = await this.prisma.article.update({
+                                          ~~~~~~~
+src/articles/articles.service.ts:332:40 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+332     const existing = await this.prisma.article.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/articles/articles.service.ts:338:39 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+338     const article = await this.prisma.article.update({
+                                          ~~~~~~~
+src/articles/articles.service.ts:359:38 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+359     const result = await this.prisma.article.updateMany({
+                                         ~~~~~~~
+src/articles/articles.service.ts:375:40 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+375     const existing = await this.prisma.article.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/articles/articles.service.ts:381:23 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+381     await this.prisma.article.delete({ where: { id } });
+                          ~~~~~~~
+src/articles/articles.service.ts:389:38 - error TS2339: Property 'article' does not exist on type 'PrismaService'.
+
+389     const exists = await this.prisma.article.findUnique({ where: { slug } });
+                                         ~~~~~~~
+src/articles/dto/article.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'BodyFormat'.
+
+1 import { BodyFormat, Locale, Platform } from '@prisma/client';
+           ~~~~~~~~~~
+src/articles/dto/article.dto.ts:1:22 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+1 import { BodyFormat, Locale, Platform } from '@prisma/client';
+                       ~~~~~~
+src/articles/dto/article.dto.ts:1:30 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+1 import { BodyFormat, Locale, Platform } from '@prisma/client';
+                               ~~~~~~~~
+src/audit/audit.service.ts:2:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+2 import type { Prisma } from '@prisma/client';
+                ~~~~~~
+src/audit/audit.service.ts:30:24 - error TS2339: Property 'auditLog' does not exist on type 'PrismaService'.
+
+30     return this.prisma.auditLog.create({
+                          ~~~~~~~~
+src/audit/audit.service.ts:73:19 - error TS2339: Property 'auditLog' does not exist on type 'PrismaService'.
+
+73       this.prisma.auditLog.findMany({
+                     ~~~~~~~~
+src/audit/audit.service.ts:84:19 - error TS2339: Property 'auditLog' does not exist on type 'PrismaService'.
+
+84       this.prisma.auditLog.count({ where }),
+                     ~~~~~~~~
+src/audit/audit.service.ts:91:36 - error TS2339: Property 'auditLog' does not exist on type 'PrismaService'.
+
+91     const rows = await this.prisma.auditLog.findMany({
+                                      ~~~~~~~~
+src/auth-events/auth-events.service.ts:2:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+2 import type { Prisma } from '@prisma/client';
+                ~~~~~~
+src/auth-events/auth-events.service.ts:73:25 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+73       await this.prisma.authEvent.create({
+                           ~~~~~~~~~
+src/auth-events/auth-events.service.ts:130:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+130       this.prisma.authEvent.findMany({
+                      ~~~~~~~~~
+src/auth-events/auth-events.service.ts:147:19 - error TS2339: Property 'authEvent' does not exist on type 'PrismaService'.
+
+147       this.prisma.authEvent.count({ where }),
+                      ~~~~~~~~~
+src/auth/auth.controller.ts:31:15 - error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+
+31 import type { User } from '@prisma/client';
+                 ~~~~
+src/auth/auth.service.ts:14:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+14 import { Prisma, User } from '@prisma/client';
+            ~~~~~~
+src/auth/auth.service.ts:14:18 - error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+
+14 import { Prisma, User } from '@prisma/client';
+                    ~~~~
+src/auth/auth.service.ts:133:44 - error TS2339: Property 'userPreference' does not exist on type 'PrismaService'.
+
+133       const preference = await this.prisma.userPreference.findUnique({
+                                               ~~~~~~~~~~~~~~
+src/auth/auth.service.ts:157:27 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+157         await this.prisma.user.update({
+                              ~~~~
+src/auth/auth.service.ts:187:23 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+187     await this.prisma.refreshToken.create({
+                          ~~~~~~~~~~~~
+src/auth/auth.service.ts:242:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+242       this.prisma.user.findUnique({ where: { email } }),
+                      ~~~~
+src/auth/auth.service.ts:243:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+243       this.prisma.user.findUnique({ where: { username: dto.username } }),
+                      ~~~~
+src/auth/auth.service.ts:258:42 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+258       const referrer = await this.prisma.user.findUnique({
+                                             ~~~~
+src/auth/auth.service.ts:264:36 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+264     const user = await this.prisma.$transaction(async (tx: any) => {
+                                       ~~~~~~~~~~~~
+src/auth/auth.service.ts:298:21 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+298         this.prisma.user.findUnique({ where: { email: backup } }),
+                        ~~~~
+src/auth/auth.service.ts:299:21 - error TS2339: Property 'userEmail' does not exist on type 'PrismaService'.
+
+299         this.prisma.userEmail.findUnique({ where: { email: backup } }),
+                        ~~~~~~~~~
+src/auth/auth.service.ts:302:27 - error TS2339: Property 'userEmail' does not exist on type 'PrismaService'.
+
+302         await this.prisma.userEmail.create({
+                              ~~~~~~~~~
+src/auth/auth.service.ts:331:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+331     const user = await this.prisma.user.findUnique({ where: { email } });
+                                       ~~~~
+src/auth/auth.service.ts:372:25 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+372       await this.prisma.user.update({
+                            ~~~~
+src/auth/auth.service.ts:409:39 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+409     const updated = await this.prisma.user.update({
+                                          ~~~~
+src/auth/auth.service.ts:439:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+439     const user = await this.prisma.user.findUnique({
+                                       ~~~~
+src/auth/auth.service.ts:477:39 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+477     const updated = await this.prisma.user.update({
+                                          ~~~~
+src/auth/auth.service.ts:513:34 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+513     let user = await this.prisma.user.findUnique({ where: { email } });
+                                     ~~~~
+src/auth/auth.service.ts:527:32 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+527       user = await this.prisma.user.findUnique({
+                                   ~~~~
+src/auth/auth.service.ts:532:32 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+532       user = await this.prisma.$transaction(async (tx: any) => {
+                                   ~~~~~~~~~~~~
+src/auth/auth.service.ts:571:32 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+571       user = await this.prisma.user.update({
+                                   ~~~~
+src/auth/auth.service.ts:602:34 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+602     let user = await this.prisma.user.findUnique({ where: { email } });
+                                     ~~~~
+src/auth/auth.service.ts:613:32 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+613       user = await this.prisma.user.findUnique({
+                                   ~~~~
+src/auth/auth.service.ts:619:32 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+619       user = await this.prisma.$transaction(async (tx: any) => {
+                                   ~~~~~~~~~~~~
+src/auth/auth.service.ts:655:32 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+655       user = await this.prisma.user.update({
+                                   ~~~~
+src/auth/auth.service.ts:694:34 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+694     let user = await this.prisma.user.findUnique({ where: { email } });
+                                     ~~~~
+src/auth/auth.service.ts:705:32 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+705       user = await this.prisma.user.findUnique({
+                                   ~~~~
+src/auth/auth.service.ts:711:32 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+711       user = await this.prisma.$transaction(async (tx: any) => {
+                                   ~~~~~~~~~~~~
+src/auth/auth.service.ts:747:32 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+747       user = await this.prisma.user.update({
+                                   ~~~~
+src/auth/auth.service.ts:788:37 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+788     const taken = await this.prisma.user.findFirst({ where: { phone } });
+                                        ~~~~
+src/auth/auth.service.ts:801:45 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+801     const usernameTaken = await this.prisma.user.findUnique({
+                                                ~~~~
+src/auth/auth.service.ts:816:36 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+816     const user = await this.prisma.$transaction(async (tx: any) => {
+                                       ~~~~~~~~~~~~
+src/auth/auth.service.ts:861:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+861     const user = await this.prisma.user.findFirst({ where: { phone } });
+                                       ~~~~
+src/auth/auth.service.ts:902:38 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+902     const record = await this.prisma.phoneVerification.findUnique({
+                                         ~~~~~~~~~~~~~~~~~
+src/auth/auth.service.ts:923:23 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+923     await this.prisma.phoneVerification.update({
+                          ~~~~~~~~~~~~~~~~~
+src/auth/auth.service.ts:928:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+928     const user = await this.prisma.user.findUniqueOrThrow({
+                                       ~~~~
+src/auth/auth.service.ts:933:23 - error TS2339: Property 'userPreference' does not exist on type 'PrismaService'.
+
+933     await this.prisma.userPreference.upsert({
+                          ~~~~~~~~~~~~~~
+src/auth/auth.service.ts:943:39 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+943     const updated = await this.prisma.user.update({
+                                          ~~~~
+src/auth/auth.service.ts:967:38 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+967     const stored = await this.prisma.refreshToken.findUnique({
+                                         ~~~~~~~~~~~~
+src/auth/auth.service.ts:974:27 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+974         await this.prisma.refreshToken.update({
+                              ~~~~~~~~~~~~
+src/auth/auth.service.ts:986:23 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+986     await this.prisma.refreshToken.update({
+                          ~~~~~~~~~~~~
+src/auth/auth.service.ts:998:38 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+998     const stored = await this.prisma.refreshToken.findUnique({
+                                         ~~~~~~~~~~~~
+src/auth/auth.service.ts:1002:25 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1002       await this.prisma.refreshToken.update({
+                             ~~~~~~~~~~~~
+src/auth/auth.service.ts:1017:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1017     const user = await this.prisma.user.findUnique({ where: { email } });
+                                        ~~~~
+src/auth/auth.service.ts:1056:38 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1056       const user = await this.prisma.user.findUnique({ where: { email } });
+                                          ~~~~
+src/auth/auth.service.ts:1080:23 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+1080     await this.prisma.$transaction([
+                           ~~~~~~~~~~~~
+src/auth/auth.service.ts:1081:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1081       this.prisma.user.update({
+                       ~~~~
+src/auth/auth.service.ts:1085:19 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1085       this.prisma.refreshToken.updateMany({
+                       ~~~~~~~~~~~~
+src/auth/auth.service.ts:1101:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1101     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1115:23 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1115     await this.prisma.user.update({
+                           ~~~~
+src/auth/auth.service.ts:1119:23 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1119     await this.prisma.refreshToken.updateMany({
+                           ~~~~~~~~~~~~
+src/auth/auth.service.ts:1135:38 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1135       const user = await this.prisma.user.findUnique({ where: { email } });
+                                          ~~~~
+src/auth/auth.service.ts:1151:25 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1151       await this.prisma.user.update({
+                             ~~~~
+src/auth/auth.service.ts:1166:25 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1166       await this.prisma.user.update({
+                             ~~~~
+src/auth/auth.service.ts:1188:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1188     const user = await this.prisma.user.findUnique({
+                                        ~~~~
+src/auth/auth.service.ts:1209:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1209     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1227:40 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1227       const exists = await this.prisma.user.findUnique({
+                                            ~~~~
+src/auth/auth.service.ts:1239:39 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1239     const updated = await this.prisma.user.update({
+                                           ~~~~
+src/auth/auth.service.ts:1267:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1267     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1314:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1314     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1349:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1349     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1377:40 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1377     const existing = await this.prisma.user.findUnique({
+                                            ~~~~
+src/auth/auth.service.ts:1393:23 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1393     await this.prisma.user.update({ where: { id: userId }, data });
+                           ~~~~
+src/auth/auth.service.ts:1405:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1405     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1425:23 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1425     await this.prisma.user.update({
+                           ~~~~
+src/auth/auth.service.ts:1435:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1435     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1503:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1503     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1537:23 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1537     await this.prisma.user.update({
+                           ~~~~
+src/auth/auth.service.ts:1552:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1552     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1586:23 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1586     await this.prisma.user.update({
+                           ~~~~
+src/auth/auth.service.ts:1604:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1604     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1616:25 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1616       await this.prisma.user.update({
+                             ~~~~
+src/auth/auth.service.ts:1634:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1634     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1651:23 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1651     await this.prisma.user.update({
+                           ~~~~
+src/auth/auth.service.ts:1671:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1671     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1685:23 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1685     await this.prisma.user.update({
+                           ~~~~
+src/auth/auth.service.ts:1705:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1705     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1736:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1736     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                        ~~~~
+src/auth/auth.service.ts:1752:23 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+1752     await this.prisma.$transaction([
+                           ~~~~~~~~~~~~
+src/auth/auth.service.ts:1753:19 - error TS2339: Property 'userEmail' does not exist on type 'PrismaService'.
+
+1753       this.prisma.userEmail.create({
+                       ~~~~~~~~~
+src/auth/auth.service.ts:1761:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1761       this.prisma.user.update({
+                       ~~~~
+src/auth/auth.service.ts:1774:38 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1774     const byUser = await this.prisma.user.findFirst({ where: { email } });
+                                          ~~~~
+src/auth/auth.service.ts:1778:43 - error TS2339: Property 'userEmail' does not exist on type 'PrismaService'.
+
+1778     const bySecondary = await this.prisma.userEmail.findUnique({
+                                               ~~~~~~~~~
+src/auth/auth.service.ts:1787:23 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1787     await this.prisma.refreshToken.updateMany({
+                           ~~~~~~~~~~~~
+src/auth/auth.service.ts:1796:41 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1796       const current = await this.prisma.refreshToken.findUnique({
+                                             ~~~~~~~~~~~~
+src/auth/auth.service.ts:1801:40 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1801     const sessions = await this.prisma.refreshToken.findMany({
+                                            ~~~~~~~~~~~~
+src/auth/auth.service.ts:1824:39 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1824     const session = await this.prisma.refreshToken.findFirst({
+                                           ~~~~~~~~~~~~
+src/auth/auth.service.ts:1832:23 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1832     await this.prisma.refreshToken.update({
+                           ~~~~~~~~~~~~
+src/auth/auth.service.ts:1853:41 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1853       const current = await this.prisma.refreshToken.findUnique({
+                                             ~~~~~~~~~~~~
+src/auth/auth.service.ts:1858:38 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1858     const result = await this.prisma.refreshToken.updateMany({
+                                          ~~~~~~~~~~~~
+src/auth/auth.service.ts:1878:21 - error TS2339: Property 'refreshToken' does not exist on type 'PrismaService'.
+
+1878         this.prisma.refreshToken.updateMany({
+                         ~~~~~~~~~~~~
+src/auth/auth.service.ts:1882:21 - error TS2339: Property 'verificationToken' does not exist on type 'PrismaService'.
+
+1882         this.prisma.verificationToken.deleteMany({
+                         ~~~~~~~~~~~~~~~~~
+src/auth/auth.service.ts:1899:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1899     const user = await this.prisma.user.findUnique({
+                                        ~~~~
+src/auth/auth.service.ts:1967:25 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+1967       await this.prisma.user.findUnique({ where: { username: candidate } })
+                             ~~~~
+src/auth/dto/auth.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+1 import { Locale } from '@prisma/client';
+           ~~~~~~
+src/backup/backup.controller.ts:26:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+26 import type { Admin } from '@prisma/client';
+                 ~~~~~
+src/backup/backup.service.ts:78:42 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+78       const oldDaily = await this.prisma.backup.findMany({
+                                            ~~~~~~
+src/backup/backup.service.ts:84:27 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+84         await this.prisma.backup.deleteMany({
+                             ~~~~~~
+src/backup/backup.service.ts:89:25 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+89       await this.prisma.backup.create({
+                           ~~~~~~
+src/backup/backup.service.ts:188:19 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+188       this.prisma.backup.findMany({
+                      ~~~~~~
+src/backup/backup.service.ts:198:19 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+198       this.prisma.backup.count(),
+                      ~~~~~~
+src/backup/backup.service.ts:207:24 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+207     return this.prisma.backup.create({
+                           ~~~~~~
+src/backup/backup.service.ts:220:38 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+220     const backup = await this.prisma.backup.findUnique({ where: { id } });
+                                         ~~~~~~
+src/backup/backup.service.ts:233:24 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+233     return this.prisma.backup.update({
+                           ~~~~~~
+src/backup/backup.service.ts:240:38 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+240     const backup = await this.prisma.backup.findUnique({ where: { id } });
+                                         ~~~~~~
+src/backup/backup.service.ts:248:38 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+248     const backup = await this.prisma.backup.findUnique({ where: { id } });
+                                         ~~~~~~
+src/backup/backup.service.ts:252:23 - error TS2339: Property 'backup' does not exist on type 'PrismaService'.
+
+252     await this.prisma.backup.delete({ where: { id } });
+                          ~~~~~~
+src/banners/banners.controller.ts:11:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+11 import { Locale } from '@prisma/client';
+            ~~~~~~
+src/banners/banners.service.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+2 import { Locale } from '@prisma/client';
+           ~~~~~~
+src/banners/banners.service.ts:16:24 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+16     return this.prisma.banner.create({
+                          ~~~~~~
+src/banners/banners.service.ts:46:24 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+46     return this.prisma.banner.findMany({
+                          ~~~~~~
+src/banners/banners.service.ts:56:19 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+56       this.prisma.banner.findMany({
+                     ~~~~~~
+src/banners/banners.service.ts:62:19 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+62       this.prisma.banner.count(),
+                     ~~~~~~
+src/banners/banners.service.ts:68:40 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+68     const existing = await this.prisma.banner.findUnique({ where: { id } });
+                                          ~~~~~~
+src/banners/banners.service.ts:74:24 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+74     return this.prisma.banner.update({
+                          ~~~~~~
+src/banners/banners.service.ts:107:40 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+107     const existing = await this.prisma.banner.findUnique({ where: { id } });
+                                           ~~~~~~
+src/banners/banners.service.ts:113:23 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+113     await this.prisma.banner.delete({ where: { id } });
+                          ~~~~~~
+src/banners/banners.service.ts:118:23 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+118     await this.prisma.banner.update({
+                          ~~~~~~
+src/banners/banners.service.ts:125:23 - error TS2339: Property 'banner' does not exist on type 'PrismaService'.
+
+125     await this.prisma.banner.update({
+                          ~~~~~~
+src/banners/dto/banner.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'BannerPosition'.
+
+1 import { BannerPosition, Locale } from '@prisma/client';
+           ~~~~~~~~~~~~~~
+src/banners/dto/banner.dto.ts:1:26 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+1 import { BannerPosition, Locale } from '@prisma/client';
+                           ~~~~~~
+src/calls/call-session.service.ts:22:39 - error TS2339: Property 'callSession' does not exist on type 'PrismaService'.
+
+22     const session = await this.prisma.callSession.create({
+                                         ~~~~~~~~~~~
+src/calls/call-session.service.ts:40:39 - error TS2339: Property 'callSession' does not exist on type 'PrismaService'.
+
+40     const session = await this.prisma.callSession.findUnique({
+                                         ~~~~~~~~~~~
+src/calls/call-session.service.ts:51:23 - error TS2339: Property 'callSession' does not exist on type 'PrismaService'.
+
+51     await this.prisma.callSession.update({
+                         ~~~~~~~~~~~
+src/calls/call-session.service.ts:73:23 - error TS2339: Property 'supportMessage' does not exist on type 'PrismaService'.
+
+73     await this.prisma.supportMessage.create({
+                         ~~~~~~~~~~~~~~
+src/calls/calls.gateway.ts:89:41 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+89         const admin = await this.prisma.admin.findUnique({
+                                           ~~~~~
+src/calls/calls.gateway.ts:103:40 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+103         const user = await this.prisma.user.findUnique({
+                                           ~~~~
+src/calls/calls.gateway.ts:141:38 - error TS2339: Property 'supportTicket' does not exist on type 'PrismaService'.
+
+141     const ticket = await this.prisma.supportTicket.findUnique({
+                                         ~~~~~~~~~~~~~
+src/calls/calls.gateway.ts:206:42 - error TS2339: Property 'supportTicket' does not exist on type 'PrismaService'.
+
+206         const ticket = await this.prisma.supportTicket.findUnique({
+                                             ~~~~~~~~~~~~~
+src/calls/calls.gateway.ts:510:40 - error TS2339: Property 'supportTicket' does not exist on type 'PrismaService'.
+
+510       const ticket = await this.prisma.supportTicket
+                                           ~~~~~~~~~~~~~
+src/comments/comments.controller.ts:12:15 - error TS2305: Module '"@prisma/client"' has no exported member 'CommentStatus'.
+
+12 import type { CommentStatus, ContentType } from '@prisma/client';
+                 ~~~~~~~~~~~~~
+src/comments/comments.controller.ts:12:30 - error TS2305: Module '"@prisma/client"' has no exported member 'ContentType'.
+
+12 import type { CommentStatus, ContentType } from '@prisma/client';
+                                ~~~~~~~~~~~
+src/comments/comments.controller.ts:30:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+30 import type { Admin } from '@prisma/client';
+                 ~~~~~
+src/comments/comments.service.ts:7:10 - error TS2305: Module '"@prisma/client"' has no exported member 'CommentStatus'.
+
+7 import { CommentStatus, ContentType, Platform, Prisma } from '@prisma/client';
+           ~~~~~~~~~~~~~
+src/comments/comments.service.ts:7:25 - error TS2305: Module '"@prisma/client"' has no exported member 'ContentType'.
+
+7 import { CommentStatus, ContentType, Platform, Prisma } from '@prisma/client';
+                          ~~~~~~~~~~~
+src/comments/comments.service.ts:7:38 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+7 import { CommentStatus, ContentType, Platform, Prisma } from '@prisma/client';
+                                       ~~~~~~~~
+src/comments/comments.service.ts:7:48 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+7 import { CommentStatus, ContentType, Platform, Prisma } from '@prisma/client';
+                                                 ~~~~~~
+src/comments/comments.service.ts:53:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+53     const user = await this.prisma.user.findUnique({
+                                      ~~~~
+src/comments/comments.service.ts:65:40 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+65       const parent = await this.prisma.comment.findUnique({
+                                          ~~~~~~~
+src/comments/comments.service.ts:80:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+80     const comment = await this.prisma.comment.create({
+                                         ~~~~~~~
+src/comments/comments.service.ts:96:40 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+96       const parent = await this.prisma.comment.findUnique({
+                                          ~~~~~~~
+src/comments/comments.service.ts:134:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+134       this.prisma.comment.findMany({
+                      ~~~~~~~
+src/comments/comments.service.ts:144:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+144       this.prisma.comment.count({ where }),
+                      ~~~~~~~
+src/comments/comments.service.ts:164:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+164       this.prisma.comment.findMany({
+                      ~~~~~~~
+src/comments/comments.service.ts:171:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+171       this.prisma.comment.count({ where }),
+                      ~~~~~~~
+src/comments/comments.service.ts:189:23 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+189         ? this.prisma.like.findMany({
+                          ~~~~
+src/comments/comments.service.ts:198:19 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+198       this.prisma.like.groupBy({
+                      ~~~~
+src/comments/comments.service.ts:222:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+222     const comment = await this.prisma.comment.findUnique({ where: { id } });
+                                          ~~~~~~~
+src/comments/comments.service.ts:241:24 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+241     return this.prisma.comment.update({
+                           ~~~~~~~
+src/comments/comments.service.ts:249:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+249     const comment = await this.prisma.comment.findUnique({ where: { id } });
+                                          ~~~~~~~
+src/comments/comments.service.ts:260:23 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+260     await this.prisma.comment.delete({ where: { id } });
+                          ~~~~~~~
+src/comments/comments.service.ts:271:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+271     const comment = await this.prisma.comment.findUnique({
+                                          ~~~~~~~
+src/comments/comments.service.ts:275:23 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+275     await this.prisma.comment.update({
+                          ~~~~~~~
+src/comments/comments.service.ts:317:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+317       this.prisma.comment.findMany({
+                      ~~~~~~~
+src/comments/comments.service.ts:328:19 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+328       this.prisma.comment.count({ where }),
+                      ~~~~~~~
+src/comments/comments.service.ts:334:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+334     const comment = await this.prisma.comment.findUnique({ where: { id } });
+                                          ~~~~~~~
+src/comments/comments.service.ts:340:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+340     const updated = await this.prisma.comment.update({
+                                          ~~~~~~~
+src/comments/comments.service.ts:353:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+353     const comment = await this.prisma.comment.findUnique({ where: { id } });
+                                          ~~~~~~~
+src/comments/comments.service.ts:364:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+364     const updated = await this.prisma.comment.update({
+                                          ~~~~~~~
+src/comments/comments.service.ts:376:39 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+376     const comment = await this.prisma.comment.findUnique({ where: { id } });
+                                          ~~~~~~~
+src/comments/comments.service.ts:382:23 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+382     await this.prisma.comment.delete({ where: { id } });
+                          ~~~~~~~
+src/comments/dto/comment.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'ContentType'.
+
+1 import { ContentType } from '@prisma/client';
+           ~~~~~~~~~~~
+src/common/decorators/caller.decorator.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+2 import { Admin } from '@prisma/client';
+           ~~~~~
+src/common/decorators/current-admin.decorator.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+2 import { Admin } from '@prisma/client';
+           ~~~~~
+src/common/filters/prisma-exception.filter.ts:8:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+8 import { Prisma } from '@prisma/client';
+           ~~~~~~
+src/common/guards/admin-auth.guard.ts:46:37 - error TS2339: Property 'admin' does not exist on type 'PrismaService'.
+
+46     const admin = await this.prisma.admin.findUnique({
+                                       ~~~~~
+src/common/guards/email-verified.guard.ts:19:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+19     const user = await this.prisma.user.findUnique({
+                                      ~~~~
+src/common/guards/permissions.guard.ts:8:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+8 import { Admin } from '@prisma/client';
+           ~~~~~
+src/common/guards/terms-accepted.guard.ts:40:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+40     const user = await this.prisma.user.findUnique({
+                                      ~~~~
+src/episodes/dto/episode.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+1 import { Locale, Platform } from '@prisma/client';
+           ~~~~~~
+src/episodes/dto/episode.dto.ts:1:18 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+1 import { Locale, Platform } from '@prisma/client';
+                   ~~~~~~~~
+src/episodes/episodes.controller.ts:11:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+11 import type { Locale, Admin, Platform } from '@prisma/client';
+                 ~~~~~~
+src/episodes/episodes.controller.ts:11:23 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+11 import type { Locale, Admin, Platform } from '@prisma/client';
+                         ~~~~~
+src/episodes/episodes.controller.ts:11:30 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+11 import type { Locale, Admin, Platform } from '@prisma/client';
+                                ~~~~~~~~
+src/episodes/episodes.service.ts:6:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+           ~~~~~~
+src/episodes/episodes.service.ts:6:18 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+                   ~~~~~~~~
+src/episodes/episodes.service.ts:6:28 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+                             ~~~~~~
+src/episodes/episodes.service.ts:31:24 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+31     return this.prisma.episode
+                          ~~~~~~~
+src/episodes/episodes.service.ts:63:20 - error TS7006: Parameter 'episode' implicitly has an 'any' type.
+
+63       .then(async (episode) => {
+                      ~~~~~~~
+src/episodes/episodes.service.ts:102:19 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+102       this.prisma.episode.findMany({
+                      ~~~~~~~
+src/episodes/episodes.service.ts:113:19 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+113       this.prisma.episode.count({ where }),
+                      ~~~~~~~
+src/episodes/episodes.service.ts:119:39 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+119     const episode = await this.prisma.episode.findFirst({
+                                          ~~~~~~~
+src/episodes/episodes.service.ts:145:40 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+145     const existing = await this.prisma.episode.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/episodes/episodes.service.ts:160:24 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+160     return this.prisma.episode.update({
+                           ~~~~~~~
+src/episodes/episodes.service.ts:205:40 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+205     const existing = await this.prisma.episode.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/episodes/episodes.service.ts:216:23 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+216     await this.prisma.episode.delete({ where: { id } });
+                          ~~~~~~~
+src/episodes/episodes.service.ts:230:39 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+230     const episode = await this.prisma.episode.findFirst({
+                                          ~~~~~~~
+src/episodes/episodes.service.ts:247:39 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+247     const episode = await this.prisma.episode.findFirst({
+                                          ~~~~~~~
+src/episodes/episodes.service.ts:264:27 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+264       ? await this.prisma.episode.findMany({
+                              ~~~~~~~
+src/episodes/episodes.service.ts:279:41 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+279       const similar = await this.prisma.episode.findMany({
+                                            ~~~~~~~
+src/episodes/episodes.service.ts:301:40 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+301       const latest = await this.prisma.episode.findMany({
+                                           ~~~~~~~
+src/episodes/episodes.service.ts:319:40 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+319     const existing = await this.prisma.episode.findUnique({
+                                           ~~~~~~~
+src/episodes/episodes.service.ts:330:36 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+330     const copy = await this.prisma.episode.create({
+                                       ~~~~~~~
+src/episodes/episodes.service.ts:366:25 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+366       await this.prisma.episode.findUnique({ where: { slug: candidate } })
+                            ~~~~~~~
+src/episodes/episodes.service.ts:375:40 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+375     const existing = await this.prisma.episode.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/episodes/episodes.service.ts:384:39 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+384     const episode = await this.prisma.episode.update({
+                                          ~~~~~~~
+src/episodes/episodes.service.ts:439:40 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+439     const existing = await this.prisma.episode.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/episodes/episodes.service.ts:445:39 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+445     const episode = await this.prisma.episode.update({
+                                          ~~~~~~~
+src/episodes/episodes.service.ts:466:38 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+466     const result = await this.prisma.episode.updateMany({
+                                         ~~~~~~~
+src/episodes/episodes.service.ts:482:40 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+482     const existing = await this.prisma.episode.findUnique({ where: { id } });
+                                           ~~~~~~~
+src/episodes/episodes.service.ts:488:23 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+488     await this.prisma.episode.delete({ where: { id } });
+                          ~~~~~~~
+src/episodes/episodes.service.ts:496:24 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+496     return this.prisma.episode.count();
+                           ~~~~~~~
+src/episodes/episodes.service.ts:500:38 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+500     const exists = await this.prisma.episode.findUnique({ where: { slug } });
+                                         ~~~~~~~
+src/friends/friends.service.ts:7:10 - error TS2305: Module '"@prisma/client"' has no exported member 'FriendStatus'.
+
+7 import { FriendStatus } from '@prisma/client';
+           ~~~~~~~~~~~~
+src/friends/friends.service.ts:54:40 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+54     const receiver = await this.prisma.user.findUnique({
+                                          ~~~~
+src/friends/friends.service.ts:63:40 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+63     const existing = await this.prisma.friend.findFirst({
+                                          ~~~~~~
+src/friends/friends.service.ts:88:39 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+88     const request = await this.prisma.friend.create({
+                                         ~~~~~~
+src/friends/friends.service.ts:92:38 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+92     const sender = await this.prisma.user.findUnique({
+                                        ~~~~
+src/friends/friends.service.ts:97:44 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+97     const notification = await this.prisma.notification.create({
+                                              ~~~~~~~~~~~~
+src/friends/friends.service.ts:126:39 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+126     const request = await this.prisma.friend.findUnique({
+                                          ~~~~~~
+src/friends/friends.service.ts:141:39 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+141     const updated = await this.prisma.friend.update({
+                                          ~~~~~~
+src/friends/friends.service.ts:147:40 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+147       const friend = await this.prisma.user.findUnique({
+                                           ~~~~
+src/friends/friends.service.ts:151:46 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+151       const notification = await this.prisma.notification.create({
+                                                 ~~~~~~~~~~~~
+src/friends/friends.service.ts:178:35 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+178     const rel = await this.prisma.friend.findFirst({
+                                      ~~~~~~
+src/friends/friends.service.ts:188:25 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+188       await this.prisma.friend.delete({ where: { id: rel.id } });
+                            ~~~~~~
+src/friends/friends.service.ts:200:40 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+200     const existing = await this.prisma.friend.findFirst({
+                                           ~~~~~~
+src/friends/friends.service.ts:209:25 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+209       await this.prisma.friend.update({
+                            ~~~~~~
+src/friends/friends.service.ts:214:25 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+214       await this.prisma.friend.create({
+                            ~~~~~~
+src/friends/friends.service.ts:223:40 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+223     const existing = await this.prisma.friend.findFirst({
+                                           ~~~~~~
+src/friends/friends.service.ts:233:25 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+233       await this.prisma.friend.delete({ where: { id: existing.id } });
+                            ~~~~~~
+src/friends/friends.service.ts:246:19 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+246       this.prisma.friend.findMany({
+                      ~~~~~~
+src/friends/friends.service.ts:256:19 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+256       this.prisma.friend.count({ where }),
+                      ~~~~~~
+src/friends/friends.service.ts:268:19 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+268       this.prisma.friend.findMany({
+                      ~~~~~~
+src/friends/friends.service.ts:275:19 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+275       this.prisma.friend.count({ where }),
+                      ~~~~~~
+src/friends/friends.service.ts:284:19 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+284       this.prisma.friend.findMany({
+                      ~~~~~~
+src/friends/friends.service.ts:291:19 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+291       this.prisma.friend.count({ where }),
+                      ~~~~~~
+src/friends/friends.service.ts:297:35 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+297     const rel = await this.prisma.friend.findFirst({
+                                      ~~~~~~
+src/friends/friends.service.ts:314:36 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+314     const rels = await this.prisma.friend.findMany({
+                                       ~~~~~~
+src/friends/friends.service.ts:326:43 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+326     const suggestions = await this.prisma.user.findMany({
+                                              ~~~~
+src/friends/friends.service.ts:343:41 - error TS2339: Property 'friend' does not exist on type 'PrismaService'.
+
+343     const relations = await this.prisma.friend.findMany({
+                                            ~~~~~~
+src/friends/friends.service.ts:350:37 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+350     const users = await this.prisma.user.findMany({
+                                        ~~~~
+src/health/health.controller.ts:41:49 - error TS2345: Argument of type 'PrismaService' is not assignable to parameter of type 'PrismaClient'.
+
+41         this.prismaHealth.pingCheck('database', this.prisma, {
+                                                   ~~~~~~~~~~~
+src/likes/likes.controller.ts:10:15 - error TS2305: Module '"@prisma/client"' has no exported member 'ContentType'.
+
+10 import type { ContentType, LikeType, Locale } from '@prisma/client';
+                 ~~~~~~~~~~~
+src/likes/likes.controller.ts:10:28 - error TS2305: Module '"@prisma/client"' has no exported member 'LikeType'.
+
+10 import type { ContentType, LikeType, Locale } from '@prisma/client';
+                              ~~~~~~~~
+src/likes/likes.controller.ts:10:38 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+10 import type { ContentType, LikeType, Locale } from '@prisma/client';
+                                        ~~~~~~
+src/likes/likes.service.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'ContentType'.
+
+2 import { ContentType, LikeType, Locale } from '@prisma/client';
+           ~~~~~~~~~~~
+src/likes/likes.service.ts:2:23 - error TS2305: Module '"@prisma/client"' has no exported member 'LikeType'.
+
+2 import { ContentType, LikeType, Locale } from '@prisma/client';
+                        ~~~~~~~~
+src/likes/likes.service.ts:2:33 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+2 import { ContentType, LikeType, Locale } from '@prisma/client';
+                                  ~~~~~~
+src/likes/likes.service.ts:51:40 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+51     const existing = await this.prisma.like.findUnique({
+                                          ~~~~
+src/likes/likes.service.ts:58:25 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+58       await this.prisma.like.delete({ where: { id: existing.id } });
+                           ~~~~
+src/likes/likes.service.ts:63:23 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+63     await this.prisma.like.create({
+                         ~~~~
+src/likes/likes.service.ts:78:41 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+78       const comment = await this.prisma.comment.findUnique({
+                                           ~~~~~~~
+src/likes/likes.service.ts:100:36 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+100     const like = await this.prisma.like.findUnique({
+                                       ~~~~
+src/likes/likes.service.ts:110:19 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+110       this.prisma.like.count({ where: { contentType, contentId } }),
+                      ~~~~
+src/likes/likes.service.ts:111:19 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+111       this.prisma.like.findMany({
+                      ~~~~
+src/likes/likes.service.ts:139:19 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+139       this.prisma.like.findMany({
+                      ~~~~
+src/likes/likes.service.ts:145:19 - error TS2339: Property 'like' does not exist on type 'PrismaService'.
+
+145       this.prisma.like.count({ where }),
+                      ~~~~
+src/likes/likes.service.ts:166:42 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+166           const recs = await this.prisma.comment.findMany({
+                                             ~~~~~~~
+src/likes/likes.service.ts:174:42 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+174           const recs = await this.prisma.episode.findMany({
+                                             ~~~~~~~
+src/likes/likes.service.ts:251:27 - error TS2339: Property 'comment' does not exist on type 'PrismaService'.
+
+251         await this.prisma.comment.update({
+                              ~~~~~~~
+src/messages/dto/messages.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'MessageType'.
+
+1 import { MessageType } from '@prisma/client';
+           ~~~~~~~~~~~
+src/messages/messages.service.ts:7:10 - error TS2305: Module '"@prisma/client"' has no exported member 'ConversationKind'.
+
+7 import { ConversationKind, MessageType, Prisma } from '@prisma/client';
+           ~~~~~~~~~~~~~~~~
+src/messages/messages.service.ts:7:28 - error TS2305: Module '"@prisma/client"' has no exported member 'MessageType'.
+
+7 import { ConversationKind, MessageType, Prisma } from '@prisma/client';
+                             ~~~~~~~~~~~
+src/messages/messages.service.ts:7:41 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+7 import { ConversationKind, MessageType, Prisma } from '@prisma/client';
+                                          ~~~~~~
+src/messages/messages.service.ts:54:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+54     const user = await this.prisma.user.findUnique({ where: { id: userId } });
+                                      ~~~~
+src/messages/messages.service.ts:72:42 - error TS2339: Property 'conversation' does not exist on type 'PrismaService'.
+
+72     let conversation = await this.prisma.conversation.findFirst({
+                                            ~~~~~~~~~~~~
+src/messages/messages.service.ts:76:40 - error TS2339: Property 'conversation' does not exist on type 'PrismaService'.
+
+76       conversation = await this.prisma.conversation.create({
+                                          ~~~~~~~~~~~~
+src/messages/messages.service.ts:97:19 - error TS2339: Property 'conversation' does not exist on type 'PrismaService'.
+
+97       this.prisma.conversation.findMany({
+                     ~~~~~~~~~~~~
+src/messages/messages.service.ts:112:19 - error TS2339: Property 'conversation' does not exist on type 'PrismaService'.
+
+112       this.prisma.conversation.count({ where }),
+                      ~~~~~~~~~~~~
+src/messages/messages.service.ts:119:47 - error TS2339: Property 'message' does not exist on type 'PrismaService'.
+
+119         const unreadCount = await this.prisma.message.count({
+                                                  ~~~~~~~
+src/messages/messages.service.ts:168:44 - error TS2339: Property 'conversation' does not exist on type 'PrismaService'.
+
+168     const conversation = await this.prisma.conversation.findUnique({
+                                               ~~~~~~~~~~~~
+src/messages/messages.service.ts:247:19 - error TS2339: Property 'message' does not exist on type 'PrismaService'.
+
+247       this.prisma.message.findMany({
+                      ~~~~~~~
+src/messages/messages.service.ts:254:19 - error TS2339: Property 'message' does not exist on type 'PrismaService'.
+
+254       this.prisma.message.count({ where }),
+                      ~~~~~~~
+src/messages/messages.service.ts:303:39 - error TS2339: Property 'message' does not exist on type 'PrismaService'.
+
+303     const message = await this.prisma.message.create({
+                                          ~~~~~~~
+src/messages/messages.service.ts:318:23 - error TS2339: Property 'conversation' does not exist on type 'PrismaService'.
+
+318     await this.prisma.conversation.update({
+                          ~~~~~~~~~~~~
+src/messages/messages.service.ts:372:41 - error TS2339: Property 'message' does not exist on type 'PrismaService'.
+
+372     const { count } = await this.prisma.message.updateMany({
+                                            ~~~~~~~
+src/messages/messages.service.ts:383:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+383     const user = await this.prisma.user.findUnique({
+                                       ~~~~
+src/messages/messages.service.ts:426:39 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+426     const members = await this.prisma.user.findMany({
+                                          ~~~~
+src/messages/messages.service.ts:431:44 - error TS2339: Property 'conversation' does not exist on type 'PrismaService'.
+
+431     const conversation = await this.prisma.conversation.create({
+                                               ~~~~~~~~~~~~
+src/messages/messages.service.ts:467:39 - error TS2339: Property 'conversation' does not exist on type 'PrismaService'.
+
+467     const updated = await this.prisma.conversation.update({
+                                          ~~~~~~~~~~~~
+src/messages/messages.service.ts:488:37 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+488     const users = await this.prisma.user.findMany({
+                                        ~~~~
+src/messages/messages.service.ts:494:25 - error TS2339: Property 'groupMember' does not exist on type 'PrismaService'.
+
+494       await this.prisma.groupMember.createMany({
+                            ~~~~~~~~~~~
+src/messages/messages.service.ts:569:23 - error TS2339: Property 'groupMember' does not exist on type 'PrismaService'.
+
+569     await this.prisma.groupMember.delete({
+                          ~~~~~~~~~~~
+src/newsletter/dto/newsletter.dto.ts:8:10 - error TS2305: Module '"@prisma/client"' has no exported member 'NewsletterStatus'.
+
+8 import { NewsletterStatus } from '@prisma/client';
+           ~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.controller.ts:13:10 - error TS2305: Module '"@prisma/client"' has no exported member 'NewsletterStatus'.
+
+13 import { NewsletterStatus } from '@prisma/client';
+            ~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.controller.ts:26:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+26 import type { Admin } from '@prisma/client';
+                 ~~~~~
+src/newsletter/newsletter.service.ts:9:10 - error TS2305: Module '"@prisma/client"' has no exported member 'NewsletterStatus'.
+
+9 import { NewsletterStatus, Prisma } from '@prisma/client';
+           ~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:9:28 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+9 import { NewsletterStatus, Prisma } from '@prisma/client';
+                             ~~~~~~
+src/newsletter/newsletter.service.ts:54:40 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+54     const existing = await this.prisma.newsletterSubscriber.findUnique({
+                                          ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:59:25 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+59       await this.prisma.newsletterSubscriber.create({
+                           ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:68:25 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+68       await this.prisma.newsletterSubscriber.update({
+                           ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:118:42 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+118     const subscriber = await this.prisma.newsletterSubscriber.findUnique({
+                                             ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:126:39 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+126     const updated = await this.prisma.newsletterSubscriber.update({
+                                          ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:140:39 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+140     const updated = await this.prisma.newsletterSubscriber.update({
+                                          ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:160:19 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+160       this.prisma.newsletterSubscriber.findMany({
+                      ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:166:19 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+166       this.prisma.newsletterSubscriber.count({ where }),
+                      ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:176:40 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+176     const existing = await this.prisma.newsletterSubscriber.findUnique({
+                                           ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:184:39 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+184     const updated = await this.prisma.newsletterSubscriber.update({
+                                          ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:202:40 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+202     const existing = await this.prisma.newsletterSubscriber.findUnique({
+                                           ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:210:23 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+210     await this.prisma.newsletterSubscriber.delete({ where: { id } });
+                          ~~~~~~~~~~~~~~~~~~~~
+src/newsletter/newsletter.service.ts:216:43 - error TS2339: Property 'newsletterSubscriber' does not exist on type 'PrismaService'.
+
+216     const subscribers = await this.prisma.newsletterSubscriber.findMany({
+                                              ~~~~~~~~~~~~~~~~~~~~
+src/notifications/notifications.controller.ts:26:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+26 import type { Admin } from '@prisma/client';
+                 ~~~~~
+src/notifications/notifications.service.ts:2:15 - error TS2305: Module '"@prisma/client"' has no exported member 'NotificationType'.
+
+2 import type { NotificationType, Prisma } from '@prisma/client';
+                ~~~~~~~~~~~~~~~~
+src/notifications/notifications.service.ts:2:33 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+2 import type { NotificationType, Prisma } from '@prisma/client';
+                                  ~~~~~~
+src/notifications/notifications.service.ts:44:44 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+44     const notification = await this.prisma.notification.create({
+                                              ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:114:19 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+114       this.prisma.notification.findMany({
+                      ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:120:19 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+120       this.prisma.notification.count({ where: { userId } }),
+                      ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:126:37 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+126     const count = await this.prisma.notification.count({
+                                        ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:134:42 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+134       const existing = await this.prisma.notification.findFirst({
+                                             ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:142:25 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+142       await this.prisma.notification.update({
+                            ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:148:23 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+148     await this.prisma.notification.updateMany({
+                          ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:156:40 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+156     const existing = await this.prisma.notification.findFirst({
+                                           ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:164:23 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+164     await this.prisma.notification.delete({ where: { id } });
+                          ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:186:37 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+186     const users = await this.prisma.user.findMany({
+                                        ~~~~
+src/notifications/notifications.service.ts:191:25 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+191       await this.prisma.notification.createMany({
+                            ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:219:40 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+219       const tokens = await this.prisma.deviceToken.findMany({
+                                           ~~~~~~~~~~~
+src/notifications/notifications.service.ts:252:23 - error TS2339: Property 'broadcastLog' does not exist on type 'PrismaService'.
+
+252     await this.prisma.broadcastLog.create({
+                          ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:295:19 - error TS2339: Property 'broadcastLog' does not exist on type 'PrismaService'.
+
+295       this.prisma.broadcastLog.findMany({
+                      ~~~~~~~~~~~~
+src/notifications/notifications.service.ts:300:19 - error TS2339: Property 'broadcastLog' does not exist on type 'PrismaService'.
+
+300       this.prisma.broadcastLog.count(),
+                      ~~~~~~~~~~~~
+src/phone/phone.service.ts:14:15 - error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+
+14 import type { User } from '@prisma/client';
+                 ~~~~
+src/phone/phone.service.ts:95:37 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+95     const taken = await this.prisma.user.findFirst({
+                                       ~~~~
+src/phone/phone.service.ts:101:38 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+101     const recent = await this.prisma.phoneVerification.findFirst({
+                                         ~~~~~~~~~~~~~~~~~
+src/phone/phone.service.ts:116:44 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+116     const pendingCount = await this.prisma.phoneVerification.count({
+                                               ~~~~~~~~~~~~~~~~~
+src/phone/phone.service.ts:132:38 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+132     const record = await this.prisma.phoneVerification.create({
+                                         ~~~~~~~~~~~~~~~~~
+src/phone/phone.service.ts:147:36 - error TS2339: Property 'telegramLink' does not exist on type 'PrismaService'.
+
+147     const link = await this.prisma.telegramLink.findUnique({
+                                       ~~~~~~~~~~~~
+src/phone/phone.service.ts:167:38 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+167     const record = await this.prisma.phoneVerification.findUnique({
+                                         ~~~~~~~~~~~~~~~~~
+src/phone/phone.service.ts:187:23 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+187     await this.prisma.phoneVerification.update({
+                          ~~~~~~~~~~~~~~~~~
+src/phone/phone.service.ts:202:36 - error TS2339: Property 'telegramLink' does not exist on type 'PrismaService'.
+
+202     const link = await this.prisma.telegramLink.findUnique({
+                                       ~~~~~~~~~~~~
+src/phone/phone.service.ts:218:24 - error TS2339: Property 'telegramLink' does not exist on type 'PrismaService'.
+
+218     return this.prisma.telegramLink.findUnique({ where: { phone } });
+                           ~~~~~~~~~~~~
+src/phone/phone.service.ts:227:36 - error TS2339: Property 'telegramLink' does not exist on type 'PrismaService'.
+
+227     const link = await this.prisma.telegramLink.findUnique({
+                                       ~~~~~~~~~~~~
+src/phone/phone.service.ts:254:38 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+254       const user = await this.prisma.user.findFirst({
+                                         ~~~~
+src/phone/phone.service.ts:295:38 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+295     const record = await this.prisma.phoneVerification.findFirst({
+                                         ~~~~~~~~~~~~~~~~~
+src/phone/phone.service.ts:305:25 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+305       await this.prisma.phoneVerification.update({
+                            ~~~~~~~~~~~~~~~~~
+src/phone/phone.service.ts:312:37 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+312     const taken = await this.prisma.user.findFirst({
+                                        ~~~~
+src/phone/phone.service.ts:318:23 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+318     await this.prisma.$transaction([
+                          ~~~~~~~~~~~~
+src/phone/phone.service.ts:319:19 - error TS2339: Property 'phoneVerification' does not exist on type 'PrismaService'.
+
+319       this.prisma.phoneVerification.update({
+                      ~~~~~~~~~~~~~~~~~
+src/phone/phone.service.ts:323:19 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+323       this.prisma.user.update({
+                      ~~~~
+src/phone/phone.service.ts:334:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+334     const user = await this.prisma.user.findUniqueOrThrow({
+                                       ~~~~
+src/phone/phone.service.ts:344:44 - error TS2339: Property 'notification' does not exist on type 'PrismaService'.
+
+344     const notification = await this.prisma.notification.create({
+                                               ~~~~~~~~~~~~
+src/phone/phone.service.ts:368:36 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+368     const user = await this.prisma.user.findUniqueOrThrow({
+                                       ~~~~
+src/phone/phone.service.ts:374:39 - error TS2339: Property 'user' does not exist on type 'PrismaService'.
+
+374     const updated = await this.prisma.user.update({
+                                          ~~~~
+src/platforms/dto/platform.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+1 import { Platform } from '@prisma/client';
+           ~~~~~~~~
+src/platforms/platforms.service.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+2 import { Platform } from '@prisma/client';
+           ~~~~~~~~
+src/platforms/platforms.service.ts:19:25 - error TS2339: Property 'platformConfig' does not exist on type 'PrismaService'.
+
+19       await this.prisma.platformConfig.upsert({
+                           ~~~~~~~~~~~~~~
+src/platforms/platforms.service.ts:25:24 - error TS2339: Property 'platformConfig' does not exist on type 'PrismaService'.
+
+25     return this.prisma.platformConfig.findMany({
+                          ~~~~~~~~~~~~~~
+src/platforms/platforms.service.ts:37:36 - error TS2339: Property 'platformConfig' does not exist on type 'PrismaService'.
+
+37     const rows = await this.prisma.platformConfig.findMany({
+                                      ~~~~~~~~~~~~~~
+src/platforms/platforms.service.ts:54:24 - error TS2339: Property 'platformConfig' does not exist on type 'PrismaService'.
+
+54     return this.prisma.platformConfig.update({
+                          ~~~~~~~~~~~~~~
+src/playlists/dto/playlist.dto.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+1 import { Locale, Platform } from '@prisma/client';
+           ~~~~~~
+src/playlists/dto/playlist.dto.ts:1:18 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+1 import { Locale, Platform } from '@prisma/client';
+                   ~~~~~~~~
+src/playlists/playlists.controller.ts:11:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+11 import type { Locale, Admin, Platform } from '@prisma/client';
+                 ~~~~~~
+src/playlists/playlists.controller.ts:11:23 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+11 import type { Locale, Admin, Platform } from '@prisma/client';
+                         ~~~~~
+src/playlists/playlists.controller.ts:11:30 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+11 import type { Locale, Admin, Platform } from '@prisma/client';
+                                ~~~~~~~~
+src/playlists/playlists.service.ts:6:10 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+           ~~~~~~
+src/playlists/playlists.service.ts:6:18 - error TS2305: Module '"@prisma/client"' has no exported member 'Platform'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+                   ~~~~~~~~
+src/playlists/playlists.service.ts:6:28 - error TS2305: Module '"@prisma/client"' has no exported member 'Prisma'.
+
+6 import { Locale, Platform, Prisma } from '@prisma/client';
+                             ~~~~~~
+src/playlists/playlists.service.ts:29:24 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+29     return this.prisma.playlist.create({
+                          ~~~~~~~~
+src/playlists/playlists.service.ts:52:24 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+52     return this.prisma.playlist.create({
+                          ~~~~~~~~
+src/playlists/playlists.service.ts:84:19 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+84       this.prisma.playlist.findMany({
+                     ~~~~~~~~
+src/playlists/playlists.service.ts:97:19 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+97       this.prisma.playlist.count({ where }),
+                     ~~~~~~~~
+src/playlists/playlists.service.ts:117:19 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+117       this.prisma.playlist.findMany({
+                      ~~~~~~~~
+src/playlists/playlists.service.ts:130:19 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+130       this.prisma.playlist.count({ where }),
+                      ~~~~~~~~
+src/playlists/playlists.service.ts:136:40 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+136     const playlist = await this.prisma.playlist.findFirst({
+                                           ~~~~~~~~
+src/playlists/playlists.service.ts:165:40 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+165     const existing = await this.prisma.playlist.findUnique({ where: { id } });
+                                           ~~~~~~~~
+src/playlists/playlists.service.ts:180:24 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+180     return this.prisma.playlist.update({
+                           ~~~~~~~~
+src/playlists/playlists.service.ts:210:40 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+210     const existing = await this.prisma.playlist.findUnique({ where: { id } });
+                                           ~~~~~~~~
+src/playlists/playlists.service.ts:221:23 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+221     await this.prisma.playlist.delete({ where: { id } });
+                          ~~~~~~~~
+src/playlists/playlists.service.ts:232:39 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+232     const episode = await this.prisma.episode.findUnique({
+                                          ~~~~~~~
+src/playlists/playlists.service.ts:241:32 - error TS2339: Property 'playlistItem' does not exist on type 'PrismaService'.
+
+241       return await this.prisma.playlistItem.create({
+                                   ~~~~~~~~~~~~
+src/playlists/playlists.service.ts:260:23 - error TS2339: Property 'playlistItem' does not exist on type 'PrismaService'.
+
+260     await this.prisma.playlistItem.deleteMany({
+                          ~~~~~~~~~~~~
+src/playlists/playlists.service.ts:274:19 - error TS2339: Property 'playlistItem' does not exist on type 'PrismaService'.
+
+274       this.prisma.playlistItem.updateMany({
+                      ~~~~~~~~~~~~
+src/playlists/playlists.service.ts:279:23 - error TS2339: Property '$transaction' does not exist on type 'PrismaService'.
+
+279     await this.prisma.$transaction(tx);
+                          ~~~~~~~~~~~~
+src/playlists/playlists.service.ts:284:36 - error TS2339: Property 'playlistItem' does not exist on type 'PrismaService'.
+
+284     const last = await this.prisma.playlistItem.findFirst({
+                                       ~~~~~~~~~~~~
+src/playlists/playlists.service.ts:296:40 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+296     const playlist = await this.prisma.playlist.findUnique({
+                                           ~~~~~~~~
+src/playlists/playlists.service.ts:316:38 - error TS2339: Property 'playlist' does not exist on type 'PrismaService'.
+
+316     const exists = await this.prisma.playlist.findUnique({ where: { slug } });
+                                         ~~~~~~~~
+src/prisma/prisma.service.ts:7:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+
+7 import { PrismaClient } from '@prisma/client';
+           ~~~~~~~~~~~~
+src/prisma/prisma.service.ts:35:13 - error TS2339: Property '$on' does not exist on type 'PrismaService'.
+
+35       (this.$on as any)('query', (e: any) => {
+               ~~~
+src/prisma/prisma.service.ts:42:13 - error TS2339: Property '$on' does not exist on type 'PrismaService'.
+
+42       (this.$on as any)('error', (e: any) => {
+               ~~~
+src/prisma/prisma.service.ts:49:16 - error TS2339: Property '$connect' does not exist on type 'PrismaService'.
+
+49     await this.$connect();
+                  ~~~~~~~~
+src/prisma/prisma.service.ts:54:16 - error TS2339: Property '$disconnect' does not exist on type 'PrismaService'.
+
+54     await this.$disconnect();
+                  ~~~~~~~~~~~
+src/progress/progress.controller.ts:12:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+12 import type { Locale } from '@prisma/client';
+                 ~~~~~~
+src/progress/progress.service.ts:2:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Locale'.
+
+2 import type { Locale } from '@prisma/client';
+                ~~~~~~
+src/progress/progress.service.ts:16:39 - error TS2339: Property 'episode' does not exist on type 'PrismaService'.
+
+16     const episode = await this.prisma.episode.findUnique({
+                                         ~~~~~~~
+src/progress/progress.service.ts:33:24 - error TS2339: Property 'playbackProgress' does not exist on type 'PrismaService'.
+
+33     return this.prisma.playbackProgress.upsert({
+                          ~~~~~~~~~~~~~~~~
+src/progress/progress.service.ts:51:35 - error TS2339: Property 'playbackProgress' does not exist on type 'PrismaService'.
+
+51     const row = await this.prisma.playbackProgress.findUnique({
+                                     ~~~~~~~~~~~~~~~~
+src/progress/progress.service.ts:61:36 - error TS2339: Property 'playbackProgress' does not exist on type 'PrismaService'.
+
+61     const rows = await this.prisma.playbackProgress.findMany({
+                                      ~~~~~~~~~~~~~~~~
+src/progress/progress.service.ts:91:23 - error TS2339: Property 'playbackProgress' does not exist on type 'PrismaService'.
+
+91     await this.prisma.playbackProgress.deleteMany({
+                         ~~~~~~~~~~~~~~~~
+src/push/devices.service.ts:21:40 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+21     const existing = await this.prisma.deviceToken.findUnique({
+                                          ~~~~~~~~~~~
+src/push/devices.service.ts:27:28 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+27         return this.prisma.deviceToken.update({
+                              ~~~~~~~~~~~
+src/push/devices.service.ts:40:25 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+40       await this.prisma.deviceToken.delete({ where: { id: existing.id } });
+                           ~~~~~~~~~~~
+src/push/devices.service.ts:43:24 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+43     return this.prisma.deviceToken.create({
+                          ~~~~~~~~~~~
+src/push/devices.service.ts:57:23 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+57     await this.prisma.deviceToken.deleteMany({
+                         ~~~~~~~~~~~
+src/push/devices.service.ts:64:41 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+64     const { count } = await this.prisma.deviceToken.deleteMany({
+                                           ~~~~~~~~~~~
+src/push/devices.service.ts:71:24 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+71     return this.prisma.deviceToken.findMany({
+                          ~~~~~~~~~~~
+src/push/devices.service.ts:87:38 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+87     const tokens = await this.prisma.deviceToken.findMany({
+                                        ~~~~~~~~~~~
+src/push/devices.service.ts:96:23 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+96     await this.prisma.deviceToken.deleteMany({
+                         ~~~~~~~~~~~
+src/push/devices.service.ts:104:19 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+104       this.prisma.deviceToken.count(),
+                      ~~~~~~~~~~~
+src/push/devices.service.ts:105:19 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+105       this.prisma.deviceToken.groupBy({
+                      ~~~~~~~~~~~
+src/push/devices.service.ts:109:19 - error TS2339: Property 'deviceToken' does not exist on type 'PrismaService'.
+
+109       this.prisma.deviceToken.findMany({
+                      ~~~~~~~~~~~
+src/push/push.controller.ts:23:15 - error TS2305: Module '"@prisma/client"' has no exported member 'Admin'.
+
+23 import type { Admin } from '@prisma/client';
+                 ~~~~~
+src/push/push.service.ts:50:40 - error TS2339: Property 'pushSubscription' does not exist on type 'PrismaService'.
+
+50     const existing = await this.prisma.pushSubscription.findUnique({
+                                          ~~~~~~~~~~~~~~~~
+src/push/push.service.ts:54:41 - error TS2339: Property 'pushSubscription' does not exist on type 'PrismaService'.
+
+54       const updated = await this.prisma.pushSubscription.update({
+                                           ~~~~~~~~~~~~~~~~
+src/push/push.service.ts:65:24 - error TS2339: Property 'pushSubscription' does not exist on type 'PrismaService'.
+
+65     return this.prisma.pushSubscription.create({
+                          ~~~~~~~~~~~~~~~~
+src/push/push.service.ts:77:40 - error TS2339: Property 'pushSubscription' does not exist on type 'PrismaService'.
+
+77     const existing = await this.prisma.pushSubscription.findUnique({
+                                          ~~~~~~~~~~~~~~~~
+src/push/push.service.ts:81:25 - error TS2339: Property 'Found 791 error(s).
+
+ERROR Command error: npm run build
