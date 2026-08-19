@@ -90,6 +90,10 @@ export class NewsletterService {
       );
     }
 
+    if (existing && existing.status === 'active') {
+      return { message: 'newsletter.alreadySubscribed' };
+    }
+
     return { message: 'newsletter.subscribed' };
   }
 
