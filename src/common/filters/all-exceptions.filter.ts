@@ -31,6 +31,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
 
+    const url = httpAdapter.getRequestUrl(request);
+    const isOAuthCallback = /\/auth\/(google|github|facebook)\/callback/.test(url);
+
+    if (isOAuthCallback) {
+      const websiteUrl = process.env.WEBSITE_URL || 'http://localhost:3000';
+      this.logger.error(
+        `OAuth callback error on ${url}: ${exception instanceof Error ? exception.message : String(exception)}`,
+        exception instanceof Error ? exception.stack : undefined,
+      );
+      response.redirect(`${websiteUrl}/login?error=${encodeURIComponent('oauth_failed')}`);
+      return;
+    }
+
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let body: Partial<ErrorResponse> = {
       message: 'Internal server error',
@@ -40,6 +53,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const res = exception.getResponse();
+      this.logger.error(`[${status}] ${exception.message}`, (exception as Error).stack);
       if (typeof res === 'string') {
         body = { message: res, error: exception.name };
       } else if (typeof res === 'object' && res !== null) {
@@ -53,13 +67,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
         };
       }
     } else if (exception instanceof Error) {
-      this.logger.error(exception.message, exception.stack);
-      if (
-        process.env.NODE_ENV !== 'production' &&
-        !(exception as { status?: number }).status
-      ) {
-        body.message = exception.message;
-      }
+      this.logger.error(`[OAuth?] ${exception.message}`, exception.stack);
+      body.message = exception.message;
     }
 
     const payload: ErrorResponse = {
