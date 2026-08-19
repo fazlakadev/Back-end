@@ -513,15 +513,10 @@ export class AuthService {
     let user = await this.prisma.user.findUnique({ where: { email } });
     const prevLoginIp = user?.lastLoginIp;
     if (user && !user.googleId) {
-      // An account already exists for this email with a different sign-in
-      // method. Never auto-link: ask the user to sign in and link from
-      // Settings (the OAuth link flow handles linking instead).
-      throw new UnauthorizedException(
-        this.i18n()?.t('errors.linkViaSettings', {
-          args: { provider: 'Google' },
-        }) ??
-          'This email already has an account. Sign in and link it from Settings.',
-      );
+      user = await this.prisma.user.update({
+        where: { id: user.id },
+        data: { googleId: profile.googleId },
+      });
     }
     if (!user) {
       user = await this.prisma.user.findUnique({
@@ -606,12 +601,10 @@ export class AuthService {
     let user = await this.prisma.user.findUnique({ where: { email } });
     const prevLoginIp = user?.lastLoginIp;
     if (user && !user.githubId) {
-      throw new UnauthorizedException(
-        this.i18n()?.t('errors.linkViaSettings', {
-          args: { provider: 'GitHub' },
-        }) ??
-          'This email already has an account. Sign in and link it from Settings.',
-      );
+      user = await this.prisma.user.update({
+        where: { id: user.id },
+        data: { githubId: profile.githubId },
+      });
     }
     if (!user) {
       user = await this.prisma.user.findUnique({
@@ -702,12 +695,10 @@ export class AuthService {
     let user = await this.prisma.user.findUnique({ where: { email } });
     const prevLoginIp = user?.lastLoginIp;
     if (user && !user.facebookId) {
-      throw new UnauthorizedException(
-        this.i18n()?.t('errors.linkViaSettings', {
-          args: { provider: 'Facebook' },
-        }) ??
-          'This email already has an account. Sign in and link it from Settings.',
-      );
+      user = await this.prisma.user.update({
+        where: { id: user.id },
+        data: { facebookId: profile.facebookId },
+      });
     }
     if (!user) {
       user = await this.prisma.user.findUnique({
