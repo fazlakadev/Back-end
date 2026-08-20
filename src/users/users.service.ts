@@ -359,7 +359,7 @@ export class UsersService {
     ]);
     return {
       referralCode: me?.referralCode ?? null,
-      data,
+      referrals: data,
       meta: buildMeta(total, page, limit),
     };
   }

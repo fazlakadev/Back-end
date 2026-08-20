@@ -1,4 +1,4 @@
-﻿-- CreateEnum
+-- CreateEnum
 CREATE TYPE "Locale" AS ENUM ('ar', 'en', 'fr');
 
 -- CreateEnum
