@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
+import express from 'express';
 import * as Sentry from '@sentry/nestjs';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
@@ -43,8 +44,8 @@ async function bootstrap() {
   app.use(helmet());
   app.use(compression());
   app.use(cookieParser());
-  app.use(require('express').json({ limit: '5mb' }));
-  app.use(require('express').urlencoded({ extended: true, limit: '5mb' }));
+  app.use(express.json({ limit: '5mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '5mb' }));
   app.enableCors({
     origin: config.get<string[]>('corsOrigins') || (config.get('env') === 'production' ? [] : true),
     credentials: true,

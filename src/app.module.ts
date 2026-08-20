@@ -10,6 +10,7 @@ import {
   QueryResolver,
 } from 'nestjs-i18n';
 import * as path from 'path';
+import * as fs from 'fs';
 
 import configuration from './config/configuration';
 import { PrismaModule } from './prisma/prisma.module';
@@ -83,7 +84,14 @@ import { AppVersionModule } from './app-version/app-version.module';
       fallbackLanguage: 'ar',
       fallbacks: { 'en-*': 'en', 'fr-*': 'fr', 'ar-*': 'ar' },
       loaderOptions: {
-        path: path.resolve(__dirname, '../../src/i18n/'),
+        path: (() => {
+          const candidates = [
+            path.resolve(__dirname, 'i18n'),
+            path.resolve(__dirname, '../../src/i18n'),
+            path.resolve(__dirname, '../../i18n'),
+          ];
+          return candidates.find((p) => fs.existsSync(p)) || candidates[0];
+        })(),
         watch: true,
       },
       resolvers: [

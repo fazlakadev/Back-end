@@ -5,16 +5,22 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as mediasoup from 'mediasoup';
-import type { types as mt } from 'mediasoup';
+
+let mediasoup: any = null;
+
+try {
+  mediasoup = require('mediasoup');
+} catch {
+  // mediasoup native addon unavailable — calls will be disabled
+}
 
 export interface MediasoupConfig {
   numWorkers: number;
   worker: {
-    logLevel: mt.WorkerLogLevel;
-    logTags: mt.WorkerLogTag[];
+    logLevel: string;
+    logTags: string[];
   };
-  router: mt.RouterOptions;
+  router: any;
   webRtcTransport: {
     listenIps: Array<{ ip: string; announcedIp: string | null }>;
     initialAvailableOutgoingBitrate: number;
@@ -30,8 +36,9 @@ export interface MediasoupConfig {
 export class MediasoupService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(MediasoupService.name);
   private readonly config: MediasoupConfig;
-  private workers: mt.Worker[] = [];
+  private workers: any[] = [];
   private workerIdx = 0;
+  private disabled = false;
 
   constructor(private readonly configService: ConfigService) {
     this.config = this.configService.getOrThrow<MediasoupConfig>('mediasoup');
@@ -41,9 +48,19 @@ export class MediasoupService implements OnModuleInit, OnModuleDestroy {
     return this.config;
   }
 
+  isAvailable(): boolean {
+    return mediasoup !== null && !this.disabled;
+  }
+
   async onModuleInit(): Promise<void> {
+    if (!mediasoup) {
+      this.disabled = true;
+      this.logger.warn('mediasoup native addon not available, calls disabled');
+      return;
+    }
     const calls = this.configService.get('calls');
     if (calls && calls.enabled === false) {
+      this.disabled = true;
       this.logger.warn('Voice calls disabled, skipping mediasoup workers');
       return;
     }
@@ -55,10 +72,10 @@ export class MediasoupService implements OnModuleInit, OnModuleDestroy {
     );
   }
 
-  private async createWorker(index: number): Promise<mt.Worker> {
+  private async createWorker(index: number): Promise<any> {
     const worker = await mediasoup.createWorker({
-      logLevel: this.config.worker.logLevel,
-      logTags: this.config.worker.logTags,
+      logLevel: this.config.worker.logLevel as any,
+      logTags: this.config.worker.logTags as any,
       rtcMinPort: this.config.rtc.minPort,
       rtcMaxPort: this.config.rtc.maxPort,
     });
@@ -70,13 +87,13 @@ export class MediasoupService implements OnModuleInit, OnModuleDestroy {
     return worker;
   }
 
-  private getWorker(): mt.Worker {
+  private getWorker(): any {
     const worker = this.workers[this.workerIdx];
     this.workerIdx = (this.workerIdx + 1) % this.workers.length;
     return worker;
   }
 
-  async createRouter(): Promise<mt.Router> {
+  async createRouter(): Promise<any> {
     const worker = this.getWorker();
     return worker.createRouter({
       mediaCodecs: this.config.router.mediaCodecs,
