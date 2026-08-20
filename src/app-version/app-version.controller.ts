@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Headers, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Headers, HttpCode, HttpStatus, Req } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -8,6 +8,7 @@ import {
 } from '@nestjs/swagger';
 import { createHmac, timingSafeEqual } from 'crypto';
 import { ConfigService } from '@nestjs/config';
+import { Request } from 'express';
 import { AppVersionService } from './app-version.service';
 import { AppVersionResponse } from './dto/app-version-response.dto';
 import { Public } from '../common/decorators/public.decorator';
@@ -54,6 +55,7 @@ export class AppVersionController {
   @ApiOperation({ summary: 'GitHub webhook receiver for release events' })
   @ApiSwaggerResponse({ status: 200, description: 'Webhook received.' })
   async githubWebhook(
+    @Req() req: Request & { rawBody?: Buffer },
     @Body() payload: Record<string, unknown>,
     @Headers('x-hub-signature-256') signature?: string,
     @Headers('x-github-event') event?: string,
@@ -64,7 +66,7 @@ export class AppVersionController {
 
     const secret = this.config.get<string>('GITHUB_WEBHOOK_SECRET');
     if (secret && signature) {
-      const raw = JSON.stringify(payload);
+      const raw = req.rawBody ?? Buffer.from(JSON.stringify(payload));
       const expected = `sha256=${createHmac('sha256', secret).update(raw).digest('hex')}`;
       const a = Buffer.from(expected);
       const b = Buffer.from(signature);
