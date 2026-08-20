@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisCacheService } from '../common/cache/redis-cache.service';
 import { WebhooksService } from '../webhooks/webhooks.service';
+import { FirebaseService } from '../push/firebase.service';
+import { DevicesService } from '../push/devices.service';
 import { AppVersionResponse } from './dto/app-version-response.dto';
 
 interface GitHubRelease {
@@ -29,6 +31,8 @@ export class AppVersionService {
     private readonly prisma: PrismaService,
     private readonly config: ConfigService,
     private readonly webhooks: WebhooksService,
+    private readonly firebase: FirebaseService,
+    private readonly devices: DevicesService,
   ) {}
 
   async getLatestVersion(): Promise<AppVersionResponse> {
@@ -122,6 +126,10 @@ export class AppVersionService {
     } catch (err) {
       this.logger.error('Failed to fire app.version.updated webhook', err as Error);
     }
+
+    this.sendUpdateNotification(versionData).catch((err) => {
+      this.logger.error('Failed to send update push notifications', err as Error);
+    });
 
     this.logger.log(`New release processed: ${release.tag_name}`);
     return { received: true, version: versionData.version };
@@ -236,5 +244,44 @@ export class AppVersionService {
       if (r < l) return false;
     }
     return false;
+  }
+
+  private async sendUpdateNotification(versionData: AppVersionResponse) {
+    if (!this.firebase.isInitialized) {
+      this.logger.warn('Firebase not initialized — skipping update notification');
+      return;
+    }
+
+    const allTokens = await this.devices.getAllTokens();
+    if (allTokens.length === 0) {
+      this.logger.log('No registered devices — skipping update notification');
+      return;
+    }
+
+    const shortNotes = versionData.releaseNotes
+      .replace(/#+\s*/g, '')
+      .replace(/[*`_~>|-]/g, '')
+      .replace(/\n+/g, ' ')
+      .trim()
+      .slice(0, 200);
+
+    const { sent, failed } = await this.firebase.sendToUser(allTokens, {
+      title: `فذلكة ${versionData.tagName} متاح!`,
+      body: shortNotes || `تحديث جديد للتطبيق الإصدار ${versionData.version}`,
+      imageUrl: undefined,
+      clickAction: 'OPEN_UPDATE',
+      data: {
+        type: 'app_update',
+        version: versionData.version,
+        downloadUrl: versionData.downloadUrl,
+        channelId: 'update_download',
+      },
+    });
+
+    this.logger.log(`Update notification sent: ${sent}/${allTokens.length} devices`);
+
+    if (failed.length > 0) {
+      await this.devices.cleanupTokens(failed);
+    }
   }
 }

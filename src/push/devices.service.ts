@@ -99,6 +99,21 @@ export class DevicesService {
     this.logger.log(`Removed ${tokens.length} stale FCM tokens`);
   }
 
+  async getAllTokens(): Promise<string[]> {
+    const tokens = await this.prisma.deviceToken.findMany({
+      select: { token: true },
+    });
+    return tokens.map((t) => t.token);
+  }
+
+  async cleanupTokens(tokens: string[]) {
+    if (tokens.length === 0) return;
+    await this.prisma.deviceToken.deleteMany({
+      where: { token: { in: tokens } },
+    });
+    this.logger.log(`Cleaned up ${tokens.length} invalid FCM tokens`);
+  }
+
   async getStats() {
     const [total, byPlatform, uniqueUsers] = await Promise.all([
       this.prisma.deviceToken.count(),

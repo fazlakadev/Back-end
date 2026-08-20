@@ -12,6 +12,7 @@ import { AppVersionService } from './app-version.service';
 import { AppVersionResponse } from './dto/app-version-response.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { AdminAuth } from '../common/decorators/admin-auth.decorator';
+import { SkipTransform } from '../common/decorators/skip-transform.decorator';
 import { ApiResponse } from '../common/interceptors/transform.interceptor';
 
 @ApiTags('App Version')
@@ -24,22 +25,19 @@ export class AppVersionController {
 
   @Public()
   @Get('latest')
+  @SkipTransform()
   @ApiOperation({ summary: 'Get latest app version from GitHub' })
   @ApiSwaggerResponse({
     status: 200,
     description: 'Latest version details including download URL.',
   })
-  async getLatestVersion(): Promise<ApiResponse<AppVersionResponse>> {
-    const version = await this.appVersionService.getLatestVersion();
-    return {
-      success: true,
-      timestamp: new Date().toISOString(),
-      data: version,
-    };
+  async getLatestVersion() {
+    return this.appVersionService.getLatestVersion();
   }
 
   @Public()
   @Get('check')
+  @SkipTransform()
   @ApiOperation({ summary: 'Check if update is available (mobile client)' })
   @ApiQuery({ name: 'version', required: false, description: 'Current app version' })
   @ApiSwaggerResponse({ status: 200, description: 'Update check result.' })
@@ -47,12 +45,7 @@ export class AppVersionController {
     @Headers('x-app-version') appVersion?: string,
   ) {
     const version = appVersion || '0.0.0';
-    const result = await this.appVersionService.getVersionForClient(version);
-    return {
-      success: true,
-      timestamp: new Date().toISOString(),
-      data: result,
-    };
+    return this.appVersionService.getVersionForClient(version);
   }
 
   @Public()
