@@ -89,14 +89,17 @@ export class AppVersionService {
     const platform = repoInfo.platform;
 
     const release = payload.release;
-    const apkAsset = release.assets.find(
+    const isWindows = platform === 'WINDOWS';
+    const asset = release.assets.find(
       (a) =>
-        a.name.endsWith('.apk') ||
-        a.content_type === 'application/vnd.android.package-archive',
+        isWindows
+          ? a.name.endsWith('.zip') || a.name.endsWith('.msix') || a.name.endsWith('.msi')
+          : a.name.endsWith('.apk') ||
+            a.content_type === 'application/vnd.android.package-archive',
     );
 
-    if (!apkAsset) {
-      this.logger.warn(`Release ${release.tag_name} has no APK asset`);
+    if (!asset) {
+      this.logger.warn(`Release ${release.tag_name} has no matching asset for platform ${platform}`);
       return { received: false };
     }
 
@@ -104,7 +107,7 @@ export class AppVersionService {
       version: release.tag_name.replace(/^v/, ''),
       tagName: release.tag_name,
       releaseNotes: release.body || '',
-      downloadUrl: apkAsset.browser_download_url,
+      downloadUrl: asset.browser_download_url,
       publishedAt: release.published_at,
       htmlUrl: release.html_url,
     };
@@ -199,14 +202,17 @@ export class AppVersionService {
 
     const release: GitHubRelease = await response.json() as GitHubRelease;
 
-    const apkAsset = release.assets.find(
-      (asset) =>
-        asset.name.endsWith('.apk') ||
-        asset.content_type === 'application/vnd.android.package-archive',
+    const isWindows = repo.includes('Windows');
+    const downloadAsset = release.assets.find(
+      (a) =>
+        isWindows
+          ? a.name.endsWith('.zip') || a.name.endsWith('.msix') || a.name.endsWith('.msi')
+          : a.name.endsWith('.apk') ||
+            a.content_type === 'application/vnd.android.package-archive',
     );
 
-    const downloadUrl = apkAsset
-      ? apkAsset.browser_download_url
+    const downloadUrl = downloadAsset
+      ? downloadAsset.browser_download_url
       : release.html_url;
 
     return {
