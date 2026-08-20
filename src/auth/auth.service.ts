@@ -592,6 +592,38 @@ export class AuthService {
     return { accessToken, refreshToken, user: this.sanitize(user) };
   }
 
+  async googleNativeLogin(idToken: string, ctx: RequestContext) {
+    const { OAuth2Client } = await import('google-auth-library');
+    const clientId = this.config.get<string>('google.webClientId') || this.config.get<string>('google.clientId') || '';
+    const client = new OAuth2Client(clientId);
+
+    let ticket;
+    try {
+      ticket = await client.verifyIdToken({
+        idToken,
+        audience: clientId,
+      });
+    } catch (err: any) {
+      this.logger.warn(`Google ID token verification failed: ${err?.message}`);
+      throw new UnauthorizedException('Invalid Google ID token');
+    }
+
+    const payload = ticket.getPayload();
+    if (!payload) {
+      throw new UnauthorizedException('Invalid Google ID token');
+    }
+
+    const profile: GoogleProfileResult = {
+      googleId: payload.sub,
+      email: payload.email ?? '',
+      name: payload.name ?? 'Google User',
+      avatarUrl: payload.picture,
+      emailVerified: payload.email_verified ?? false,
+    };
+
+    return this.googleLogin(profile, ctx);
+  }
+
   async githubLogin(profile: GithubProfileResult, ctx: RequestContext) {
     const email = profile.email;
     if (!email) {

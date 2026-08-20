@@ -42,6 +42,7 @@ import {
   ChangeEmailRequestDto,
   ChangePasswordDto,
   ForgotPasswordDto,
+  GoogleNativeLoginDto,
   LoginDto,
   LogoutDto,
   OauthLinkOtpDto,
@@ -630,6 +631,24 @@ export class AuthController {
         `${redirectBase}/login?error=${encodeURIComponent(message)}`,
       );
     }
+  }
+
+  @Public()
+  @Post('google/native')
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @ApiOperation({
+    summary: 'Google native sign-in',
+    description: 'Authenticate using a Google ID token from Credential Manager (Android/iOS).',
+  })
+  @ApiBody({ type: GoogleNativeLoginDto })
+  @ApiResponse({ status: 200, description: 'Login successful.' })
+  @ApiResponse({ status: 401, description: 'Invalid ID token.' })
+  googleNativeLogin(
+    @Body() dto: GoogleNativeLoginDto,
+    @PlatformCtx() ctx: RequestContext,
+  ) {
+    return this.auth.googleNativeLogin(dto.idToken, ctx);
   }
 
   @Public()

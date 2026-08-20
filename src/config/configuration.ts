@@ -51,6 +51,7 @@ export default () => ({
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackUrl: process.env.GOOGLE_CALLBACK_URL,
+    webClientId: process.env.GOOGLE_WEB_CLIENT_ID || process.env.GOOGLE_CLIENT_ID,
     redirectUrl: process.env.WEBSITE_URL || 'http://localhost:3002',
   },
 

@@ -259,3 +259,8 @@ export class ResendVerificationDto {
   @IsEmail({}, { message: 'auth.emailInvalid' })
   email: string;
 }
+
+export class GoogleNativeLoginDto {
+  @IsString()
+  idToken: string;
+}
