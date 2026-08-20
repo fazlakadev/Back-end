@@ -28,25 +28,32 @@ export class AppVersionController {
   @Get('latest')
   @SkipTransform()
   @ApiOperation({ summary: 'Get latest app version from GitHub' })
+  @ApiQuery({ name: 'platform', required: false, description: 'Platform: MOBILE or WINDOWS', enum: ['MOBILE', 'WINDOWS'] })
   @ApiSwaggerResponse({
     status: 200,
     description: 'Latest version details including download URL.',
   })
-  async getLatestVersion() {
-    return this.appVersionService.getLatestVersion();
+  async getLatestVersion(
+    @Headers('x-app-platform') appPlatform?: string,
+  ) {
+    const platform = appPlatform || 'MOBILE';
+    return this.appVersionService.getLatestVersion(platform);
   }
 
   @Public()
   @Get('check')
   @SkipTransform()
-  @ApiOperation({ summary: 'Check if update is available (mobile client)' })
+  @ApiOperation({ summary: 'Check if update is available' })
   @ApiQuery({ name: 'version', required: false, description: 'Current app version' })
+  @ApiQuery({ name: 'platform', required: false, description: 'Platform: MOBILE or WINDOWS', enum: ['MOBILE', 'WINDOWS'] })
   @ApiSwaggerResponse({ status: 200, description: 'Update check result.' })
   async checkForUpdate(
     @Headers('x-app-version') appVersion?: string,
+    @Headers('x-app-platform') appPlatform?: string,
   ) {
     const version = appVersion || '0.0.0';
-    return this.appVersionService.getVersionForClient(version);
+    const platform = appPlatform || 'MOBILE';
+    return this.appVersionService.getVersionForClient(version, platform);
   }
 
   @Public()

@@ -23,6 +23,7 @@ enum Platform {
   WEB      // Next.js website
   MOBILE   // Flutter mobile
   DESKTOP  // Flutter desktop
+  WINDOWS  // Windows desktop (.NET + WinUI 3)
 }
 
 enum TwoFactorMethod {

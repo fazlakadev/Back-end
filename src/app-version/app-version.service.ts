@@ -22,8 +22,10 @@ interface GitHubRelease {
 @Injectable()
 export class AppVersionService {
   private readonly logger = new Logger(AppVersionService.name);
-  private readonly GITHUB_API_URL = 'https://api.github.com/repos/fazlakadev/Android/releases/latest';
-  private readonly CACHE_KEY = 'app:version:latest';
+  private readonly GITHUB_REPOS: Record<string, { repo: string; platform: string; displayName: string }> = {
+    'fazlakadev/Android': { repo: 'fazlakadev/Android', platform: 'MOBILE', displayName: 'Android' },
+    'fazlakadev/Windows': { repo: 'fazlakadev/Windows', platform: 'WINDOWS', displayName: 'Windows' },
+  };
   private readonly CACHE_TTL = 300;
 
   constructor(
@@ -35,23 +37,27 @@ export class AppVersionService {
     private readonly devices: DevicesService,
   ) {}
 
-  async getLatestVersion(): Promise<AppVersionResponse> {
+  async getLatestVersion(platform: string = 'MOBILE'): Promise<AppVersionResponse> {
+    const cacheKey = `app:version:latest:${platform}`;
     return this.cache.getOrSet(
-      this.CACHE_KEY,
-      () => this.fetchAndStore(),
+      cacheKey,
+      () => this.fetchAndStore(platform),
       this.CACHE_TTL,
     );
   }
 
-  async getVersionForClient(clientVersion?: string): Promise<AppVersionResponse & { needsUpdate: boolean; forceUpdate: boolean }> {
-    const version = await this.getLatestVersion();
+  async getVersionForClient(
+    clientVersion?: string,
+    platform: string = 'MOBILE',
+  ): Promise<AppVersionResponse & { needsUpdate: boolean; forceUpdate: boolean }> {
+    const version = await this.getLatestVersion(platform);
 
-    const mobileConfig = await this.prisma.platformConfig.findUnique({
-      where: { platform: 'MOBILE' as never },
+    const platformConfig = await this.prisma.platformConfig.findUnique({
+      where: { platform: platform as never },
     });
 
-    const minVersion = version.minVersion ?? mobileConfig?.minVersion ?? null;
-    const forceUpdate = version.forceUpdate ?? mobileConfig?.forceUpdate ?? false;
+    const minVersion = version.minVersion ?? platformConfig?.minVersion ?? null;
+    const forceUpdate = version.forceUpdate ?? platformConfig?.forceUpdate ?? false;
     const needsUpdate = clientVersion
       ? this.isNewerVersion(version.version, clientVersion)
       : false;
@@ -67,6 +73,7 @@ export class AppVersionService {
     action?: string;
     release?: GitHubRelease;
     zen?: string;
+    repository?: { full_name?: string };
   }): Promise<{ received: boolean; version?: string }> {
     if (payload.zen) {
       this.logger.log('GitHub webhook ping received');
@@ -76,6 +83,10 @@ export class AppVersionService {
     if (payload.action !== 'published' || !payload.release) {
       return { received: false };
     }
+
+    const repoName = payload.repository?.full_name ?? 'fazlakadev/Android';
+    const repoInfo = this.GITHUB_REPOS[repoName] ?? { repo: repoName, platform: 'MOBILE', displayName: 'Android' };
+    const platform = repoInfo.platform;
 
     const release = payload.release;
     const apkAsset = release.assets.find(
@@ -98,17 +109,18 @@ export class AppVersionService {
       htmlUrl: release.html_url,
     };
 
-    await this.cache.del(this.CACHE_KEY);
+    const cacheKey = `app:version:latest:${platform}`;
+    await this.cache.del(cacheKey);
 
     await this.prisma.platformConfig.upsert({
-      where: { platform: 'MOBILE' as never },
+      where: { platform: platform as never },
       update: {
         latestVersion: versionData.version,
         downloadUrl: versionData.downloadUrl,
       },
       create: {
-        platform: 'MOBILE' as never,
-        displayName: 'Android',
+        platform: platform as never,
+        displayName: repoInfo.displayName,
         latestVersion: versionData.version,
         downloadUrl: versionData.downloadUrl,
       },
@@ -127,44 +139,48 @@ export class AppVersionService {
       this.logger.error('Failed to fire app.version.updated webhook', err as Error);
     }
 
-    this.sendUpdateNotification(versionData).catch((err) => {
-      this.logger.error('Failed to send update push notifications', err as Error);
-    });
+    if (platform === 'MOBILE') {
+      this.sendUpdateNotification(versionData).catch((err) => {
+        this.logger.error('Failed to send update push notifications', err as Error);
+      });
+    }
 
     this.logger.log(`New release processed: ${release.tag_name}`);
     return { received: true, version: versionData.version };
   }
 
-  private async fetchAndStore(): Promise<AppVersionResponse> {
-    const version = await this.fetchFromGitHub();
+  private async fetchAndStore(platform: string = 'MOBILE'): Promise<AppVersionResponse> {
+    const repoInfo = Object.values(this.GITHUB_REPOS).find(r => r.platform === platform)
+      ?? { repo: 'fazlakadev/Android', platform: 'MOBILE', displayName: 'Android' };
+    const version = await this.fetchFromGitHub(repoInfo.repo);
 
     await this.prisma.platformConfig.upsert({
-      where: { platform: 'MOBILE' as never },
+      where: { platform: platform as never },
       update: {
         latestVersion: version.version,
         downloadUrl: version.downloadUrl,
       },
       create: {
-        platform: 'MOBILE' as never,
-        displayName: 'Android',
+        platform: platform as never,
+        displayName: repoInfo.displayName,
         latestVersion: version.version,
         downloadUrl: version.downloadUrl,
       },
     });
 
-    const mobileConfig = await this.prisma.platformConfig.findUnique({
-      where: { platform: 'MOBILE' as never },
+    const platformConfig = await this.prisma.platformConfig.findUnique({
+      where: { platform: platform as never },
     });
 
     return {
       ...version,
-      minVersion: mobileConfig?.minVersion ?? null,
-      forceUpdate: mobileConfig?.forceUpdate ?? false,
-      forceUpdateMessage: mobileConfig?.forceUpdateMessage ?? null,
+      minVersion: platformConfig?.minVersion ?? null,
+      forceUpdate: platformConfig?.forceUpdate ?? false,
+      forceUpdateMessage: platformConfig?.forceUpdateMessage ?? null,
     };
   }
 
-  private async fetchFromGitHub(): Promise<AppVersionResponse> {
+  private async fetchFromGitHub(repo: string = 'fazlakadev/Android'): Promise<AppVersionResponse> {
     const githubToken = this.config.get<string>('GITHUB_TOKEN');
     const headers: Record<string, string> = {
       Accept: 'application/vnd.github.v3+json',
@@ -173,7 +189,8 @@ export class AppVersionService {
     if (githubToken) {
       headers.Authorization = `Bearer ${githubToken}`;
     }
-    const response = await fetch(this.GITHUB_API_URL, { headers });
+    const githubApiUrl = `https://api.github.com/repos/${repo}/releases/latest`;
+    const response = await fetch(githubApiUrl, { headers });
 
     if (!response.ok) {
       this.logger.error(`GitHub API error: ${response.status} ${response.statusText}`);
@@ -202,10 +219,11 @@ export class AppVersionService {
     };
   }
 
-  async forceRefresh(): Promise<AppVersionResponse> {
-    await this.cache.del(this.CACHE_KEY);
-    const version = await this.fetchAndStore();
-    await this.cache.set(this.CACHE_KEY, version, this.CACHE_TTL);
+  async forceRefresh(platform: string = 'MOBILE'): Promise<AppVersionResponse> {
+    const cacheKey = `app:version:latest:${platform}`;
+    await this.cache.del(cacheKey);
+    const version = await this.fetchAndStore(platform);
+    await this.cache.set(cacheKey, version, this.CACHE_TTL);
     return version;
   }
 
@@ -214,22 +232,23 @@ export class AppVersionService {
     forceUpdate?: boolean;
     forceUpdateMessage?: string;
     downloadUrl?: string;
-  }): Promise<void> {
+  }, platform: string = 'MOBILE'): Promise<void> {
     await this.prisma.platformConfig.upsert({
-      where: { platform: 'MOBILE' as never },
+      where: { platform: platform as never },
       update: data,
       create: {
-        platform: 'MOBILE' as never,
-        displayName: 'Android',
+        platform: platform as never,
+        displayName: platform === 'WINDOWS' ? 'Windows' : 'Android',
         ...data,
       },
     });
-    await this.cache.del(this.CACHE_KEY);
+    const cacheKey = `app:version:latest:${platform}`;
+    await this.cache.del(cacheKey);
   }
 
-  async getPlatformSettings() {
+  async getPlatformSettings(platform: string = 'MOBILE') {
     return this.prisma.platformConfig.findUnique({
-      where: { platform: 'MOBILE' as never },
+      where: { platform: platform as never },
     });
   }
 
