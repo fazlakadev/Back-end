@@ -32,6 +32,7 @@ export default () => ({
     .split(',')
     .map((o) => o.trim()),
 
+  backendUrl: process.env.BACKEND_URL || 'https://back-end-hq0is.faable.link',
   websiteUrl: process.env.WEBSITE_URL || 'http://localhost:3000',
   nextAuthUrl: process.env.NEXTAUTH_URL || 'http://localhost:3000',
 
