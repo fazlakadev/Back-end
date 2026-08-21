@@ -8,6 +8,8 @@ import { TotpService } from './totp.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { GithubStrategy } from './strategies/github.strategy';
 import { FacebookStrategy } from './strategies/facebook.strategy';
+import { DesktopOAuthController } from './desktop-oauth.controller';
+import { DesktopOAuthService } from './desktop-oauth.service';
 import { UploadModule } from '../upload/upload.module';
 import { PhoneModule } from '../phone/phone.module';
 
@@ -26,13 +28,14 @@ import { PhoneModule } from '../phone/phone.module';
       }),
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, DesktopOAuthController],
   providers: [
     AuthService,
     TotpService,
     GoogleStrategy,
     GithubStrategy,
     FacebookStrategy,
+    DesktopOAuthService,
   ],
   exports: [AuthService, JwtModule],
 })
