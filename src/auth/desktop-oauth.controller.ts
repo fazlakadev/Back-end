@@ -131,9 +131,9 @@ export class DesktopOAuthController {
   @Public()
   @Get('google')
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
-  async googleAuth(@Res() res: Response) {
+  async googleAuth(@Query('redirect') redirect: string, @Res() res: Response) {
     try {
-      const url = this.desktopOAuth.buildGoogleAuthUrl(this.backendUrl());
+      const url = this.desktopOAuth.buildGoogleAuthUrl(this.backendUrl(), redirect);
       return res.redirect(url);
     } catch (err: any) {
       this.logger.error(`Desktop Google auth failed: ${err?.message}`);
@@ -147,6 +147,7 @@ export class DesktopOAuthController {
   async googleCallback(
     @Query('code') code: string,
     @Query('error') error: string,
+    @Query('state') state: string,
     @Res() res: Response,
     @PlatformCtx() ctx: RequestContext,
   ) {
@@ -162,6 +163,12 @@ export class DesktopOAuthController {
         this.backendUrl(),
         ctx,
       );
+      if (state && state.startsWith('http://localhost')) {
+        const redirectUrl = new URL(state);
+        redirectUrl.searchParams.set('accessToken', result.accessToken);
+        redirectUrl.searchParams.set('refreshToken', result.refreshToken);
+        return res.redirect(redirectUrl.toString());
+      }
       return res.send(authSuccessHtml(result.accessToken, result.refreshToken));
     } catch (err: any) {
       this.logger.error(`Desktop Google callback failed: ${err?.message}`);

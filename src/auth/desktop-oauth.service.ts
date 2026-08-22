@@ -22,7 +22,7 @@ export class DesktopOAuthService {
 
   // ─── Google ────────────────────────────────────────────────
 
-  buildGoogleAuthUrl(backendUrl: string): string {
+  buildGoogleAuthUrl(backendUrl: string, state?: string): string {
     const clientId = this.config.get<string>('google.clientId') || '';
     const callbackUrl = `${backendUrl}/api/v1/auth/desktop/google/callback`;
     const params = new URLSearchParams({
@@ -33,6 +33,7 @@ export class DesktopOAuthService {
       access_type: 'offline',
       prompt: 'consent',
     });
+    if (state) params.set('state', state);
     return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
   }
 
